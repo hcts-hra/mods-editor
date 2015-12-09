@@ -5,7 +5,6 @@
     <basis>http://dublincore.org/documents/resource-typelist/</basis>
     <description>Dublin Core list of resource types</description>
     <notes>Has legend.</notes>
-    <tab-id>subject</tab-id>
     <items>
         <item>
             <value/>

@@ -5,10 +5,6 @@
     <basis>http://www.loc.gov/standards/mods/v3/mods-userguide-elements.html#language</basis>
     <description/>
     <notes/>
-    <tab-id>language</tab-id>
-    <tab-id>record-info</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
     <items>
         <item>
             <value/>

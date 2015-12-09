@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--node insertions: --><!--missing element insertion: --><!--hints moved to code-table: --><!--hints linked with id: --><!--hints checked: --><!--saving of all nodes: --><!--schema instantiated: --><!--schema notations added: -->
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:mads="http://www.loc.gov/mads/" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="mads block-form" tab-id="mads">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:mads="http://www.loc.gov/mads/" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="mads block-form">
     <div style="display:none">
         <xf:model id="m-ui">
             <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=name-type%2cname-title-authority%2clanguage-3-type-sorted-short%2clanguage-2-type-short%2cscript-short%2ctransliteration-short%2caltRepGroup%2cnameTitleGroup%2cusage-type%2cname-part-type%2ccode-text%2cname-role-relator-authority%2crole">

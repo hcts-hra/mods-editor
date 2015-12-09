@@ -5,12 +5,6 @@
     <basis>http://memory.loc.gov/ammem/techdocs/genre.html</basis>
     <description>Basic Genre Terms for Cultural Heritage Materials</description>
     <notes>NB: label serves as value!</notes>
-    <tab-id>location</tab-id>
-    <tab-id>physical-description</tab-id>
-    <tab-id>subject</tab-id>
-    <tab-id>genre</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
     <items>
         <item>
             <label>(none selected)</label>

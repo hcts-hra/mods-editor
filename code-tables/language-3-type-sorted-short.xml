@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" xml:id="language-3-type-sorted-short">
-    <tab-id>compact-a</tab-id>
-    <tab-id>compact-b-monograph</tab-id>
-    <tab-id>compact-b-review</tab-id>
-    <tab-id>compact-b-suebs-tibetan</tab-id>
-    <tab-id>compact-b-suebs-chinese</tab-id>
-    <tab-id>compact-b-xlink</tab-id>
-    <tab-id>compact-d</tab-id>
-    <tab-id>name</tab-id>
-    <tab-id>origin</tab-id>
-    <tab-id>title</tab-id>
-    <tab-id>identifier</tab-id>
-    <tab-id>language</tab-id>
-    <tab-id>subject</tab-id>
-    <tab-id>mads</tab-id>
-    <tab-id>location</tab-id>
-    <tab-id>record-info</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
     <items>
         <item>
             <value/>

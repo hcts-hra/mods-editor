@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" xml:id="role">
     <notes>Has legend</notes>
-    <tab-id>name</tab-id>
-    <tab-id>subject</tab-id>
-    <tab-id>mads</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
     <items>
         <item>
             <label>(none selected)</label>

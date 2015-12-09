@@ -5,26 +5,6 @@
     <basis>http://www.loc.gov/standards/mods/v3/mods-userguide-elements.html#url</basis>
     <description/>
     <notes/>
-    <tab-id>title</tab-id>
-    <tab-id>name</tab-id>
-    <tab-id>language</tab-id>
-    <tab-id>mads</tab-id>
-    <tab-id>part</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
-    <tab-id>related-xlink</tab-id>
-    <tab-id>subject</tab-id>
-    <tab-id>target-audience</tab-id>
-    <tab-id>classification</tab-id>
-    <tab-id>type</tab-id>
-    <tab-id>genre</tab-id>
-    <tab-id>abstract</tab-id>
-    <tab-id>table-of-contents</tab-id>
-    <tab-id>note</tab-id>
-    <tab-id>identifier</tab-id>
-    <tab-id>location</tab-id>
-    <tab-id>access-condition</tab-id>
-    <tab-id>record-info</tab-id>
     <items>
         <item>
             <value/>

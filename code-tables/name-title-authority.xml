@@ -13,13 +13,6 @@
         Subject Heading and Term Source Codes may also be used in the usage elements identified for
         names and titles if appropriate. Many of the subject sources that contain names and titles,
         along with subjects, are repeated on this list with the same source code." </note>
-    <tab-id>name</tab-id>
-    <tab-id>title</tab-id>
-    <tab-id>mads</tab-id>
-    <tab-id>note</tab-id>
-    <tab-id>subject</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
     <items>
         <item>
             <value/>

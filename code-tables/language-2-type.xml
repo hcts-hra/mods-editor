@@ -5,9 +5,6 @@
     <basis>http://www.mathguide.de/info/tools/languagecode.html</basis>
     <description/>
     <notes>used for xml:lang</notes>
-    <tab-id>physical-description</tab-id>
-    <tab-id>related</tab-id>
-    <tab-id>related-abbreviated</tab-id>
     <items>
         <item>
             <value/>

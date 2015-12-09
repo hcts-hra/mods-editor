@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="record-info block-form" tab-id="record-info">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="record-info block-form">
     <div style="display:none">
         <xf:model id="m-ui">
             <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=script%2ctransliteration%2clanguage-2-type-short%2crecord-content-source-authority%2clanguage-3-type-sorted%2cdate-encoding%2cdate-point%2cdate-keydate%2cdate-qualifier%2clanguage-3-type-sorted-short%2cscript-short%2ctransliteration-short%2caltRepGroup%2cusage-type%2clanguage-authority%2ccode-text%2cdescription-standard-authority">
