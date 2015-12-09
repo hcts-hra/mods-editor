@@ -11,6 +11,7 @@
 	<target>tamboti/modules/edit</target>
 	<permissions user="editor" password="editor" group="biblio.users" mode="0444" />
 	<status>stable</status>
+	<prepare>pre-install.xql</prepare>
 	<tag>mods-editor</tag>
 	<tag>${package-type}</tag>
 	<tag>exist</tag>
