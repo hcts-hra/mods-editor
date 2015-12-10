@@ -263,15 +263,9 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
         </xf:model>
 };
 
-declare function local:create-page-content($id as xs:string, $type-request as xs:string, $target-collection as xs:string, $record-data as xs:string) as element(div) {
+declare function local:create-page-content($type-request as xs:string, $target-collection as xs:string, $record-data as xs:string) as element(div) {
     let $type-request := replace(replace($type-request, '-latin', ''), '-transliterated', '')
 
-    (:Get the time of the last save to the temp collection and parse it.:)
-    let $last-modified := xmldb:last-modified($config:mods-temp-collection, concat($id,'.xml'))
-    let $last-modified-hour := hours-from-dateTime($last-modified)
-    let $last-modified-minute := minutes-from-dateTime($last-modified)
-    let $last-modified-minute := functx:pad-integer-to-length($last-modified-minute, 2)
-    
     (:If the record is hosted by a record linked to through an xlink:href, 
     display the title of this record. 
     Only the xlink on the first relatedItem with type host is processed.:)
@@ -323,7 +317,7 @@ declare function local:create-page-content($id as xs:string, $type-request as xs
                     if ($target-collection-display eq security:get-user-credential-from-session()[1])
                     then $config:data-collection-name || '/Home'
                     else $target-collection-display
-            }</strong> (Last saved: {$last-modified-hour}:{$last-modified-minute}).
+            }</strong>.
         </span>
         <div id="tabs-container"/>
         <div class="save-buttons-top">    
@@ -418,7 +412,7 @@ let $log := util:log("INFO", "$temp-record-path = " || $temp-record-path)
 
 (:NB: $style appears to be introduced in order to use the xf namespace in css.:)
 let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name)
-let $content := local:create-page-content($id, $data-template-name, $target-collection, $temp-record-path)
+let $content := local:create-page-content($data-template-name, $target-collection, $temp-record-path)
 
 return 
     (util:declare-option("exist:serialize", "method=xhtml5 media-type=text/html output-doctype=yes indent=yes encoding=utf-8")
