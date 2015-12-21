@@ -243,7 +243,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                 <xf:action if="string-length(instance('i-configuration')/host) > 0">
                     <xf:setvalue ref="instance('save-data')/mods:relatedItem[@type eq 'host'][1]/@xlink:href" value="concat('#', instance('i-configuration')/host)" />                
                 </xf:action>
-                <xf:setvalue ref="instance('i-configuration')/data-template-name" value="replace(replace(instance('save-data')/@xsi:schemaLocation, 'http://www.loc.gov/mods/v3 http://cluster-schemas.uni-hd.de/mods-', ''), '.xsd', '')" />
+                <xf:setvalue if="instance('i-configuration')/data-template-name != 'insert-templates'" ref="instance('i-configuration')/data-template-name" value="replace(replace(instance('save-data')/@xsi:schemaLocation, 'http://www.loc.gov/mods/v3 http://cluster-schemas.uni-hd.de/mods-', ''), '.xsd', '')" />
                 <xf:load show="embed" targetid="tabs-container">
                     <xf:resource value="concat('user-interfaces/tabs/', replace(replace(instance('i-configuration')/data-template-name, '-latin', ''), '-transliteration', ''), '-stand-alone.xml')" />
                     <xf:extension includeCSS="false" includeScript="false" />
@@ -366,7 +366,7 @@ let $temp-record-path := concat($config:mods-temp-collection, "/", $record-id,'.
 If a new record is being created, the template name has to be retrieved from the URL in order to serve the right subform.:)
 
 (:Get the type parameter which shows which record template has been chosen.:) 
-let $type-request := request:get-parameter('type', ())
+let $type-request := request:get-parameter('type', 'insert-templates')
 
 (:Sorting data is retrieved from the type-data.:)
 (:Sorting is done in session.xql in order to present the different template options in an intellegible way.:)
@@ -408,7 +408,6 @@ let $data-template-name :=
             else concat($type-request, '-latin')  
             
 let $document-type := replace(replace($data-template-name, '-latin', ''), '-transliterated', '')
-let $log := util:log("INFO", "$temp-record-path = " || $temp-record-path)
 
 (:NB: $style appears to be introduced in order to use the xf namespace in css.:)
 let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name)
