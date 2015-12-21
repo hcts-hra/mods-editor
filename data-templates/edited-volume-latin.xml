@@ -127,7 +127,6 @@
         </languageOfCataloging>
     </recordInfo>
     <extension>
-        <ext:template/>
         <ext:transliterationOfResource/>
         <ext:catalogingStage/>
     </extension>

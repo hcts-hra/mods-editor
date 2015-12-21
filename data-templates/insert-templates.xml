@@ -291,7 +291,6 @@
         <descriptionStandard authority="" authorityURI="" lang="" script="" transliteration="" valueURI="" xml:lang=""/>
     </recordInfo>
     <extension>
-        <ext:template/>
         <ext:transliterationOfResource/>
         <ext:catalogingStage/>
     </extension>
