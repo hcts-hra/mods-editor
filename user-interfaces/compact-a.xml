@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<div xmlns:ext="http://exist-db.org/mods/extension" xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="compact block-form">
-    <div style="display:none">
-        <xf:model id="m-ui">
-            <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=language-3-type-sorted-short%2ctransliteration-short%2cscript-short%2cname-type%2cname-part-type-compact%2crole-short%2cdate-point%2cinternet-media-type%2cpart-extent-unit%2cidentifier-type">
-                <code-tables xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/"/>
-            </xf:instance>
-        </xf:model>
-    </div>
+<div xmlns:ext="http://exist-db.org/mods/extension" xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="compact block-form" tab-id="compact-a">
     <xf:group model="m-main" ref="instance('save-data')">
         <fieldset class="level-1">
             <xf:group appearance="minimal" class="label-box">
@@ -24,7 +16,7 @@
                                     <xf:hint ref="id('hint-code_lang', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -37,7 +29,7 @@
                                     <xf:hint ref="id('hint-code_transliteration-global-compact', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -50,7 +42,7 @@
                                     <xf:hint ref="id('hint-code_script-compact', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -90,11 +82,11 @@
                 </xf:output>
                 <xf:trigger ref=".[string-length(mods:extension/ext:transliterationOfResource) = 0]">
                     <xf:label>+</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:name" at="index('compact-name-repeat')" position="before" origin="instance('compact-template')/mods:name[1]" ev:event="DOMActivate"/>
+                    <xf:insert ref="instance('save-data')/mods:name" at="index('compact-name-repeat')" position="before" origin="instance('compact-template')/mods:name[1]" ev:event="DOMActivate"/>
                 </xf:trigger>
                 <xf:trigger ref=".[string-length(mods:extension/ext:transliterationOfResource) &gt; 0]">
                     <xf:label>+</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:name" at="index('compact-name-repeat')" position="before" origin="instance('compact-template')/mods:name[2]" ev:event="DOMActivate"/>
+                    <xf:insert ref="instance('save-data')/mods:name" at="index('compact-name-repeat')" position="before" origin="instance('compact-template')/mods:name[2]" ev:event="DOMActivate"/>
                 </xf:trigger>
             </xf:group>
             <xf:repeat nodeset="." id="compact-name-repeat">
@@ -113,6 +105,11 @@
                             <xf:delete nodeset="preceding-sibling::*[1]"/>
                         </xf:action>
                     </xf:trigger>
+                    <xf:output value="count(parent::*/mods:name)"/>
+                    <xf:trigger bind="b-compact-name" src="../../resources/images/delete.png" class="up-down-pointer">
+                        <xf:hint>Delete this item</xf:hint>
+                        <xf:delete ref="instance('save-data')/mods:name[index('compact-name-repeat')]"/>
+                    </xf:trigger>
                 </xf:group>
                 <xf:group class="input">
                     <fieldset class="level-2">
@@ -125,7 +122,7 @@
                         <xf:group appearance="full" class="margin-plus">
                             <xf:select1 ref="./@type">
                                 <xf:label>Type of Name</xf:label>
-                                <xf:itemset nodeset="id('name-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                <xf:itemset nodeset="id('name-type', instance('code-tables'))/*:items/*:item">
                                     <xf:label ref="*:label"/>
                                     <xf:value ref="*:value"/>
                                 </xf:itemset>
@@ -137,7 +134,7 @@
                                             <xf:hint ref="id('hint-code_transliteration-global-compact', instance('i-hint-codes'))/*:help"/>
                                         </xf:output>
                                     </xf:label>
-                                    <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>
@@ -148,7 +145,7 @@
                                     <xf:label>
                                         <xf:output value="if (../.[@script='Latn']) then 'Transliterated' else ''"/>
                                     </xf:label>
-                                    <xf:itemset nodeset="id('name-part-type-compact', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('name-part-type-compact', instance('code-tables'))/*:items/*:item">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>
@@ -177,7 +174,7 @@
                                 <xf:group class="margin-plus" appearance="full">
                                     <xf:select1 ref=".">
                                         <xf:label>Role Term</xf:label>
-                                        <xf:itemset nodeset="id('role-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('role-short', instance('code-tables'))/*:items/*:item">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -190,7 +187,7 @@
             </xf:repeat>
         </fieldset>
     </xf:group>
-    <xf:group model="m-main" ref="instance('save-data')/.[string(mods:extension/ext:template) = 'monograph-latin'] | instance('save-data')/.[string(mods:extension/ext:template) = 'monograph-transliterated'] | instance('save-data')/.[string(mods:extension/ext:template) = 'edited-volume-latin'] | instance('save-data')/.[string(mods:extension/ext:template) = 'edited-volume-transliterated'] | instance('save-data')/.[string(mods:extension/ext:template) = 'periodical-latin'] | instance('save-data')/.[string(mods:extension/ext:template) = 'periodical-transliterated']">
+        <xf:group model="m-main" ref="instance('save-data')/.[contains(@xsi:schemaLocation, ('monograph-latin', 'monograph-transliterated', 'edited-volume-latin', 'edited-volume-transliterated', 'periodical-latin', 'periodical-transliterated'))]">
         <fieldset class="level-1">
             <xf:group appearance="minimal" class="label-box">
                 <xf:output value="'Origin Information'" class="hint-icon">
@@ -274,7 +271,7 @@
                                 <xf:group ref=".[count(../mods:dateIssued) &gt; 1]">
                                     <xf:select1 ref="./@point">
                                         <xf:label>Point</xf:label>
-                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -304,7 +301,7 @@
                                 <xf:group ref=".[count(../mods:copyrightDate) &gt; 1]">
                                     <xf:select1 ref="./@point">
                                         <xf:label>Point</xf:label>
-                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -320,7 +317,7 @@
             </xf:repeat>
         </fieldset>
     </xf:group>
-    <xf:group model="m-main" ref="instance('save-data')/.[string(mods:physicalDescription) and not(instance('save-data')/mods:extension/ext:template='newspaper-latin' or instance('save-data')/mods:extension/ext:template='newspaper-transliterated')]">
+    <xf:group model="m-main" ref="instance('save-data')/.[string(mods:physicalDescription) and not(instance('save-data')/.[contains(@xsi:schemaLocation, ('newspaper-latin', 'newspaper-transliterated'))])]">
         <fieldset class="level-1">
             <xf:group appearance="minimal" class="label-box">
                 <xf:output value="'Physical Description'" class="hint-icon">
@@ -340,7 +337,7 @@
                             <xf:group class="margin-plus" appearance="full">
                                 <xf:select1 ref=".">
                                     <xf:label>Internet Media Type</xf:label>
-                                    <xf:itemset nodeset="id('internet-media-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('internet-media-type', instance('code-tables'))/*:items/*:item">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>
@@ -365,7 +362,7 @@
                                                 <xf:hint ref="id('hint-code_part-extent-unit', instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('part-extent-unit', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('part-extent-unit', instance('code-tables'))/*:items/*:item">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -425,7 +422,7 @@
                 <xf:group class="margin-plus" appearance="full">
                     <xf:select1 ref="./@type" class="text_50">
                         <xf:label>Type</xf:label>
-                        <xf:itemset nodeset="id('identifier-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                        <xf:itemset nodeset="id('identifier-type', instance('code-tables'))/*:items/*:item">
                             <xf:label ref="*:label"/>
                             <xf:value ref="*:value"/>
                         </xf:itemset>

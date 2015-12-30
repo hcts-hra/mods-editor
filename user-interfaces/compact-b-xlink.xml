@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="compact block-form">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="compact block-form" tab-id="compact-b-xlink">
     <div style="display:none">
         <xf:model id="m-ui">
             <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=part-extent-unit%2cname-part-type-compact%2crole-short%2ctransliteration-short%2clanguage-3-type-sorted-short%2cdate-point%2cinternet-media-type%2cidentifier-type">
@@ -18,7 +17,7 @@
                 <xf:group ref=".[@type='host']">
                     <xf:group ref=".[mods:part]">
                         <fieldset class="level-2">
-                            <xf:group ref=".[instance('save-data')/mods:extension/ext:template='related-book-review-in-periodical-latin' or instance('save-data')/mods:extension/ext:template='related-book-review-in-periodical-transliterated']">
+                            <xf:group ref="instance('save-data')/.[contains(@xsi:schemaLocation, ('related-book-review-in-periodical-latin', 'related-book-review-in-periodical-transliterated'))]">
                                 <xf:group appearance="minimal" class="label-box">
                                     <xf:output value="'Location of Review in Periodical'" class="hint-icon">
                                         <xf:hint ref="id('hint-code_part-relatedItem-periodical-compact',instance('i-hint-codes'))/*:help"/>
@@ -29,7 +28,7 @@
                                     </xf:trigger>
                                 </xf:group>
                             </xf:group>
-                            <xf:group ref=".[instance('save-data')/mods:extension/ext:template='related-article-in-periodical-latin' or instance('save-data')/mods:extension/ext:template='related-article-in-periodical-transliterated']">
+                            <xf:group ref="instance('save-data')/.[@xsi:schemaLocation, ('related-article-in-periodical-latin', 'related-article-in-periodical-transliterated'))]">
                                 <xf:group appearance="minimal" class="label-box">
                                     <xf:output value="'Location of Article in Periodical'" class="hint-icon">
                                         <xf:hint ref="id('hint-code_part-relatedItem-periodical-compact',instance('i-hint-codes'))/*:help"/>
@@ -40,7 +39,7 @@
                                     </xf:trigger>
                                 </xf:group>
                             </xf:group>
-                            <xf:group ref=".[instance('save-data')/mods:extension/ext:template='related-newspaper-article-latin' or instance('save-data')/mods:extension/ext:template='related-newspaper-article-transliterated']">
+                            <xf:group ref="instance('save-data')/.[contains(@xsi:schemaLocation, ('related-newspaper-article-latin', 'related-newspaper-article-transliterated'))]">
                                 <xf:group appearance="minimal" class="label-box">
                                     <xf:output value="'Location of Article in Newspaper'" class="hint-icon">
                                         <xf:hint ref="id('hint-code_part-relatedItem-periodical-compact',instance('i-hint-codes'))/*:help"/>
@@ -51,7 +50,7 @@
                                     </xf:trigger>
                                 </xf:group>
                             </xf:group>
-                            <xf:group ref=".[instance('save-data')/mods:extension/ext:template='related-contribution-to-edited-volume-latin' or instance('save-data')/mods:extension/ext:template='related-contribution-to-edited-volume-transliterated']">
+                            <xf:group ref="instance('save-data')/.[contains(@xsi:schemaLocation, ('related-contribution-to-edited-volume-latin', 'related-contribution-to-edited-volume-transliterated'))]">
                                 <xf:group appearance="minimal" class="label-box extra-wide">
                                     <xf:output value="'Location of Contribution in Edited Volume'" class="hint-icon">
                                         <xf:hint ref="id('hint-code_part-relatedItem-periodical-compact',instance('i-hint-codes'))/*:help"/>
@@ -63,7 +62,7 @@
                                 </xf:group>
                             </xf:group>
                             <xf:repeat nodeset="./mods:part" id="related-item-part-review-repeat">
-                                <xf:group ref=".[mods:detail and (instance('save-data')/mods:extension/ext:template='related-article-in-periodical-latin' or instance('save-data')/mods:extension/ext:template='related-article-in-periodical-transliterated' or instance('save-data')/mods:extension/ext:template='related-book-review-in-periodical-latin'or instance('save-data')/mods:extension/ext:template='related-book-review-in-periodical-transliterated' or instance('save-data')/mods:extension/ext:template='related-newspaper-article-latin' or instance('save-data')/mods:extension/ext:template='related-newspaper-article-transliterated')]">
+                                <xf:group ref=".[mods:detail and instance('save-data')/.[contains(@xsi:schemaLocation, ('related-article-in-periodical-latin', 'related-article-in-periodical-transliterated', 'related-book-review-in-periodical-latin', 'related-book-review-in-periodical-transliterated', 'related-newspaper-article-latin', 'related-newspaper-article-transliterated'))]">
                                     <fieldset class="level-3">
                                         <xf:group appearance="minimal" class="label-box">
                                             <xf:label>Volume and Issue/Section</xf:label>
@@ -79,10 +78,10 @@
                                         </xf:repeat>
                                     </fieldset>
                                 </xf:group>
-                                <xf:group ref=".[mods:date and (instance('save-data')/mods:extension/ext:template='related-article-in-periodical-latin' or instance('save-data')/mods:extension/ext:template='related-article-in-periodical-transliterated' or instance('save-data')/mods:extension/ext:template='related-book-review-in-periodical-latin'or instance('save-data')/mods:extension/ext:template='related-book-review-in-periodical-transliterated' or instance('save-data')/mods:extension/ext:template='related-newspaper-article-latin' or instance('save-data')/mods:extension/ext:template='related-newspaper-article-transliterated')]">
+                                <xf:group ref=".[mods:date and instance('save-data')/.[contains(@xsi:schemaLocation, ('related-article-in-periodical-latin', 'related-article-in-periodical-transliterated', 'related-book-review-in-periodical-latin', 'related-book-review-in-periodical-transliterated', 'related-newspaper-article-latin', 'related-newspaper-article-transliterated'))]">
                                     <fieldset class="level-3">
                                         <xf:group appearance="minimal" class="label-box">
-                                            <xf:label>Year/Date of Issue</xf:label>
+                                            <xf:label>Year/ Date of Issue</xf:label>
                                         </xf:group>
                                         <xf:repeat nodeset="./mods:date" id="related-item-part-date-review-repeat">
                                             <div class="block-form">

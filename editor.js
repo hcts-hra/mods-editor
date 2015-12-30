@@ -13,7 +13,7 @@ $(document).ready(function() {
         active: 0
     });
     $(".subtabs").tabs({
-        activate: function(event, ui){
+        activate: function(event, ui) {
             fluxProcessor.dispatchEventType("main-content", "load-subform", {
                 "subform-id": ui.newTab.attr('aria-controls')
             });             
