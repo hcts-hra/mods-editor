@@ -259,14 +259,7 @@ declare function local:do-updates($item, $doc) {
     (:If there is an extension in $doc, check whether it has the required children and insert them if they are missing.:)
     if ($doc/mods:extension)
     then 
-    (:If there is no ext:template in $doc/extension, insert one.:)
         (
-        if ($doc/mods:extension/ext:template)
-        then ()
-        else
-            update insert <ext:template/>
-            into $doc/mods:extension
-        ,
         (:If there is no ext:catalogingStage in $doc/extension, insert one.:)
         if ($doc/mods:extension/ext:catalogingStage)
         then ()
@@ -285,7 +278,6 @@ declare function local:do-updates($item, $doc) {
     else
         update insert
             <extension xmlns="http://www.loc.gov/mods/v3" xmlns:ext="http://exist-db.org/mods/extension">
-                <ext:template/>
                 <ext:transliterationOfResource/>
                 <ext:catalogingStage/>
             </extension>        

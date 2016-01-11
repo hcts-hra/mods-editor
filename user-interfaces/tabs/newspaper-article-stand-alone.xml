@@ -52,13 +52,13 @@
                     </li>
                     <li>
                         <a href="#physical-description">Physical Description</a>
-                    </li>                    
+                    </li>
                 </ul>
                 <div id="title"/>
                 <div id="name"/>
                 <div id="origin"/>
                 <div id="part"/>
-                <div id="physical-description"/>                
+                <div id="physical-description"/>
             </div>
         </div>
         <div id="tab-3">
@@ -90,7 +90,7 @@
                     </li>
                     <li>
                         <a href="#classification">Classifications</a>
-                    </li>                    
+                    </li>
                 </ul>
                 <div id="note"/>
                 <div id="subject"/>
@@ -100,7 +100,7 @@
                 <div id="language"/>
                 <div id="type"/>
                 <div id="genre"/>
-                <div id="classification"/>                
+                <div id="classification"/>
             </div>
         </div>
         <div id="tab-4">
@@ -138,13 +138,13 @@
                     </li>
                     <li>
                         <a href="#extension">Extensions</a>
-                    </li>                    
+                    </li>
                 </ul>
                 <div id="identifier"/>
                 <div id="record-info"/>
                 <div id="location"/>
                 <div id="access-condition"/>
-                <div id="extension"/>                
+                <div id="extension"/>
             </div>
         </div>
     </div>

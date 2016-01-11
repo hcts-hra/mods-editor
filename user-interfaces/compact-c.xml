@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="compact block-form">
+<div xmlns:ext="http://exist-db.org/mods/extension" xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="compact block-form">
     <div style="display:none">
         <xf:model id="m-ui">
             <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=note-type%2cdate-encoding-short%2cdate-point">
@@ -22,7 +21,7 @@
                 <xf:group appearance="full" class="margin-plus">
                     <xf:select1 ref="./@type" selection="open">
                         <xf:label>Type </xf:label>
-                        <xf:itemset nodeset="id('note-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                        <xf:itemset nodeset="id('note-type', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                             <xf:label ref="*:label"/>
                             <xf:value ref="*:value"/>
                         </xf:itemset>
@@ -138,7 +137,7 @@
                                                 <xf:hint ref="id('hint-code_temporal-encoding', instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-encoding-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-encoding-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -151,7 +150,7 @@
                                                 <xf:hint ref="id('hint-code_point', instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-point', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>

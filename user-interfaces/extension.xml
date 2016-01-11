@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--node insertions: insertion and deletion does not work, but this does not matter, since elements are inserted in edit.xq--><!--missing element insertion: does not work, but this does not matter, since elements are inserted in edit.xq--><!--hints moved to code-table: OK--><!--hints linked with id: OK--><!--hints checked: OK--><!--saving of all nodes: OK--><!--schema instantiated: n/a--><!--schema notations added: n/a-->
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001f/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="extension block-form">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001f/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="extension block-form" tab-id="extension">
     <div style="display:none">
         <xf:model id="m-ui">
             <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=document-type%2ctransliteration%2ccataloging-stage">
@@ -17,7 +16,7 @@
             </xf:group>
             <xf:repeat nodeset="instance('save-data')/mods:extension" id="extension-repeat">
                 <xf:group appearance="full">
-                    <xf:group ref=".[not(ext:template)] | .[not(ext:transliterationOfResource)]">
+                    <xf:group ref=".[not(ext:transliterationOfResource)]">
                         <xf:switch>
                             <xf:case id="extension-add-node-hide">
                                 <div class="open-close-button">
@@ -35,19 +34,12 @@
                                     </xf:trigger>
                                 </div>
                                 <div class="node-adds">
-                                    <xf:group ref=".[not(ext:template)] | .[not(ext:transliterationOfResource)]">
-                                        <xf:trigger ref=".[not(ext:template)]" class="add-button">
-                                            <xf:label class="xforms-group-label-centered">Add Tamboti Template</xf:label>
-                                            <xf:action ev:event="DOMActivate">
-                                                <xf:toggle case="extension-add-node-hide" ev:event="DOMActivate"/>
-                                                <xf:insert nodeset="ext:template" at="index('extension-repeat')" position="before" origin="instance('insert-templates')/ext:template"/>
-                                            </xf:action>
-                                        </xf:trigger>
+                                    <xf:group ref=".[not(ext:transliterationOfResource)]">
                                         <xf:trigger ref=".[not(ext:transliterationOfResource)]" class="add-button">
                                             <xf:label class="xforms-group-label-centered">Add Transliteration Of Resource</xf:label>
                                             <xf:action ev:event="DOMActivate">
                                                 <xf:toggle case="extension-add-node-hide" ev:event="DOMActivate"/>
-                                                <xf:insert nodeset="ext:template" at="index('extension-repeat')" position="before" origin="instance('insert-templates')/ext:template"/>
+                                                <xf:insert nodeset="ext:transliterationOfResource" at="index('extension-repeat')" position="before" origin="instance('insert-templates')/ext:transliterationOfResource"/>
                                             </xf:action>
                                         </xf:trigger>
                                     </xf:group>
@@ -55,7 +47,7 @@
                             </xf:case>
                         </xf:switch>
                     </xf:group>
-                    <xf:select1 ref="ext:template">
+                    <xf:select1 ref="instance('save-data')/@xsi:schemaLocation">
                         <xf:label>
                             <xf:output value="'Tamboti Template'" class="hint-icon">
                                 <xf:hint ref="id('hint-code_template', instance('i-hint-codes'))/*:help"/>

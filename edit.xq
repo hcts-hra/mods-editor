@@ -204,11 +204,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
            <xf:instance src="{concat('get-document-type-metadata.xq?data-template-name=', replace(replace($data-template-name, '-latin', ''), '-transliteration', ''))}" id="i-document-type-metadata">
                 <code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" />
            </xf:instance>   
-           
-            <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=transliteration-short%2cscript-short%2cname-type%2cname-part-type-compact%2crole-short%2cdate-point%2cinternet-media-type%2cpart-extent-unit%2cidentifier-type%2cnote-type%2cdate-encoding-short%2caltRepGroup%2cabbreviated-title-authority%2cname-title-authority%2cnameTitleGroup%2cyes-empty%2ctitle-type%2cusage-type%2clanguage-3-type-sorted-short%2clanguage-2-type-short">
-                <code-tables xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/"/>
-            </xf:instance>
-           
+
            <!--Having binds would prevent a tab from being saved when clicking on another tab, 
            so binds are not used.--> 
            <!--
@@ -239,8 +235,8 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
            </xf:submission>
 
             <xf:action ev:event="xforms-ready">
-               <xf:load show="embed" targetid="userInterfaceContainer">
-                    <xf:resource value="concat('user-interfaces/', instance('i-variables')/initial-ui-id, '.xml#userInterfaceContainer')"/>
+               <xf:load show="embed" targetid="user-interface-container">
+                    <xf:resource value="concat('user-interfaces/', instance('i-variables')/initial-ui-id, '.xml#user-interface-container')"/>
                 </xf:load>
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:languageTerm" value="instance('i-configuration')/languageOfResource" />
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:scriptTerm" value="instance('i-configuration')/scriptOfResource" />
@@ -253,9 +249,8 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                 <xf:setvalue if="instance('i-configuration')/data-template-name != 'insert-templates'" ref="instance('i-configuration')/data-template-name" value="replace(replace(instance('save-data')/@xsi:schemaLocation, 'http://www.loc.gov/mods/v3 http://cluster-schemas.uni-hd.de/mods-', ''), '.xsd', '')" />
             </xf:action>
             <xf:action ev:event="loadSubform" ev:observer="main-content">
-                <xf:message level="modal"><xf:output value="event('subformId')" /></xf:message>
-                <xf:setvalue ref="instance('i-variables')/subform-relative-path" value="concat('user-interfaces/', event('subformId'), '.xml#userInterfaceContainer')" />
-                <xf:load show="embed" targetid="userInterfaceContainer">
+                <xf:setvalue ref="instance('i-variables')/subform-relative-path" value="concat('user-interfaces/', event('subformId'), '.xml#user-interface-container')" />
+                <xf:load show="embed" targetid="user-interface-container">
                     <xf:resource value="instance('i-variables')/subform-relative-path" />
                 </xf:load>
                 <xf:rebuild model="m-main"/>
@@ -338,7 +333,7 @@ declare function local:create-page-content($type-request as xs:string, $target-c
                     {$related-publication-title}
             </span>
         </div>            
-        <div id="userInterfaceContainer"/>
+        <div id="user-interface-container"/>
         <div class="save-buttons-bottom">    
             <!--<xf:submit submission="save-submission">
                 <xf:label>Save</xf:label>
