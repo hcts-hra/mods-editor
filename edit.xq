@@ -1,7 +1,6 @@
 xquery version "3.0";
 
 (:TODO: change all 'monograph' to 'book' in tabs-data.xml and compact body files:)
-(:TODO: delete all '-compact' from ext:template in records, then delete all code that removes this from type in session.xql, edit.xql.:)
 (:TODO: Code related to MADS files.:)
 (:TODO move code into security module:)
 
@@ -126,7 +125,6 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
       and an empty catalogingStage into mods:extension.:)  
       update insert
           <extension xmlns="http://www.loc.gov/mods/v3" xmlns:ext="http://exist-db.org/mods/extension">
-              <ext:template>{$template-request}</ext:template>
               <ext:transliterationOfResource>{$transliterationOfResource}</ext:transliterationOfResource>
               <ext:catalogingStage/>
           </extension>
@@ -146,7 +144,7 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
     )
 };
 
-declare function local:create-xf-model($id as xs:string, $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string) as element(xf:model) {
+declare function local:create-xf-model($id as xs:string, $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
     let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
     
     return
@@ -200,7 +198,11 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
             
            <xf:instance src="{concat('get-document-type-metadata.xq?data-template-name=', replace(replace($data-template-name, '-latin', ''), '-transliteration', ''))}" id="i-document-type-metadata">
                 <code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" />
-           </xf:instance>            
+           </xf:instance>   
+           
+            <xf:instance id="i-code-tables" src="get-code-tables.xq?code-table-ids=transliteration-short%2cscript-short%2cname-type%2cname-part-type-compact%2crole-short%2cdate-point%2cinternet-media-type%2cpart-extent-unit%2cidentifier-type%2cnote-type%2cdate-encoding-short%2caltRepGroup%2cabbreviated-title-authority%2cname-title-authority%2cnameTitleGroup%2cyes-empty%2ctitle-type%2cusage-type%2clanguage-3-type-sorted-short%2clanguage-2-type-short">
+                <code-tables xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/"/>
+            </xf:instance>
            
            <!--Having binds would prevent a tab from being saved when clicking on another tab, 
            so binds are not used.--> 
@@ -232,8 +234,8 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
            </xf:submission>
 
             <xf:action ev:event="xforms-ready">
-               <xf:load show="embed" targetid="user-interface-container">
-                    <xf:resource value="'user-interfaces/title.xml#user-interface-container'"/>
+               <xf:load show="embed" targetid="userInterfaceContainer">
+                    <xf:resource value="'user-interfaces/compact-a.xml#userInterfaceContainer'"/>
                 </xf:load>
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:languageTerm" value="instance('i-configuration')/languageOfResource" />
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:scriptTerm" value="instance('i-configuration')/scriptOfResource" />
@@ -244,18 +246,16 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                     <xf:setvalue ref="instance('save-data')/mods:relatedItem[@type eq 'host'][1]/@xlink:href" value="concat('#', instance('i-configuration')/host)" />                
                 </xf:action>
                 <xf:setvalue if="instance('i-configuration')/data-template-name != 'insert-templates'" ref="instance('i-configuration')/data-template-name" value="replace(replace(instance('save-data')/@xsi:schemaLocation, 'http://www.loc.gov/mods/v3 http://cluster-schemas.uni-hd.de/mods-', ''), '.xsd', '')" />
-                <xf:load show="embed" targetid="tabs-container">
-                    <xf:resource value="concat('user-interfaces/tabs/', replace(replace(instance('i-configuration')/data-template-name, '-latin', ''), '-transliteration', ''), '-stand-alone.xml')" />
-                    <xf:extension includeCSS="false" includeScript="false" />
-                </xf:load>                
             </xf:action>
-            <xf:action ev:event="load-subform" ev:observer="main-content">
-                <xf:setvalue ref="instance('i-variables')/subform-relative-path" value="concat('user-interfaces/', event('subform-id'), '.xml')" />
-                <xf:load show="embed" targetid="user-interface-container">
+            <xf:action ev:event="loadSubform" ev:observer="main-content">
+                <xf:message level="modal"><xf:output value="event('subformId')" /></xf:message>
+                <xf:setvalue ref="instance('i-variables')/subform-relative-path" value="concat('user-interfaces/', event('subformId'), '.xml#userInterfaceContainer')" />
+                <xf:load show="embed" targetid="userInterfaceContainer">
                     <xf:resource value="instance('i-variables')/subform-relative-path" />
-                    <xf:extension includeCSS="false" includeScript="false" />
                 </xf:load>
-                <xf:refresh model="m-main"/>                
+                <xf:rebuild model="m-main"/>
+                <xf:recalculate model="m-main"/>
+                <xf:refresh model="m-main"/>
             </xf:action>            
            <xf:action ev:event="save-and-close-action" ev:observer="main-content">
                <xf:send submission="save-and-close-submission" />
@@ -263,7 +263,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
         </xf:model>
 };
 
-declare function local:create-page-content($type-request as xs:string, $target-collection as xs:string, $record-data as xs:string) as element(div) {
+declare function local:create-page-content($type-request as xs:string, $target-collection as xs:string, $record-data as xs:string, $tabs as item()+) as element(div) {
     let $type-request := replace(replace($type-request, '-latin', ''), '-transliterated', '')
 
     (:If the record is hosted by a record linked to through an xlink:href, 
@@ -319,7 +319,7 @@ declare function local:create-page-content($type-request as xs:string, $target-c
                     else $target-collection-display
             }</strong>.
         </span>
-        <div id="tabs-container"/>
+        {$tabs}
         <div class="save-buttons-top">    
              <xf:trigger>
                 <xf:label>
@@ -333,7 +333,7 @@ declare function local:create-page-content($type-request as xs:string, $target-c
                     {$related-publication-title}
             </span>
         </div>            
-        <div id="user-interface-container"/>
+        <div id="userInterfaceContainer"/>
         <div class="save-buttons-bottom">    
             <!--<xf:submit submission="save-submission">
                 <xf:label>Save</xf:label>
@@ -408,10 +408,13 @@ let $data-template-name :=
             else concat($type-request, '-latin')  
             
 let $document-type := replace(replace($data-template-name, '-latin', ''), '-transliterated', '')
+let $log := util:log("INFO", "$type-request = " || $type-request)
+let $log := util:log("INFO", "$data-template-name = " || $data-template-name)
 
 (:NB: $style appears to be introduced in order to use the xf namespace in css.:)
-let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name)
-let $content := local:create-page-content($data-template-name, $target-collection, $temp-record-path)
+let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))
+let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
+let $content := local:create-page-content($data-template-name, $target-collection, $temp-record-path, $tabs)
 
 return 
     (util:declare-option("exist:serialize", "method=xhtml5 media-type=text/html output-doctype=yes indent=yes encoding=utf-8")
