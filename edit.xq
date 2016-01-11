@@ -147,6 +147,9 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
 
 declare function local:create-xf-model($id as xs:string, $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
     let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
+    let $log := util:log("INFO", "$tabs")
+    let $log := util:log("INFO", $tabs/html:ul[1]/html:li[1]/html:a/text())
+    let $log := util:log("INFO", substring($tabs//html:div[@id = 'tab-1']//html:li[1]/html:a/@href, 2))
     
     return
         <xf:model id="m-main">
@@ -164,6 +167,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                 <variables xmlns="">
                     <subform-relative-path />
                     <compact-name-delete />
+                    <initial-ui-id>{substring($tabs//html:div[@id = 'tab-1']//html:li[1]/html:a/@href, 2)}</initial-ui-id>
                 </variables>
             </xf:instance>            
             
@@ -236,7 +240,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
 
             <xf:action ev:event="xforms-ready">
                <xf:load show="embed" targetid="userInterfaceContainer">
-                    <xf:resource value="'user-interfaces/compact-a.xml#userInterfaceContainer'"/>
+                    <xf:resource value="concat('user-interfaces/', instance('i-variables')/initial-ui-id, '.xml#userInterfaceContainer')"/>
                 </xf:load>
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:languageTerm" value="instance('i-configuration')/languageOfResource" />
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:scriptTerm" value="instance('i-configuration')/scriptOfResource" />
@@ -413,7 +417,7 @@ let $log := util:log("INFO", "$type-request = " || $type-request)
 let $log := util:log("INFO", "$data-template-name = " || $data-template-name)
 
 (:NB: $style appears to be introduced in order to use the xf namespace in css.:)
-let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))
+let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))/html:div
 let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
 let $content := local:create-page-content($data-template-name, $target-collection, $temp-record-path, $tabs)
 
