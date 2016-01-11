@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" xml:id="yes-empty">
+    <status>finished</status>
+    <form>closed</form>
+    <basis/>
+    <description/>
+    <notes/>
+    <items>
+        <item>
+            <value/>
+            <label>(none selected)</label>
+        </item>
+        <item>
+            <label>Yes</label>
+            <value>yes</value>
+        </item>
+    </items>
+</code-table>

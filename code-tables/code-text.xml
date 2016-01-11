@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" xml:id="code-text">
+    <status>finished</status>
+    <form>closed</form>
+    <basis>http://www.loc.gov/standards/mods/v3/mods-userguide-elements.html</basis>
+    <description/>
+    <notes/>
+    <items>
+        <item>
+            <value/>
+            <label>(none selected)</label>
+        </item>
+        <item>
+            <label>code</label>
+            <value>code</value>
+        </item>
+        <item>
+            <label>text</label>
+            <value>text</value>
+        </item>
+    </items>
+</code-table>

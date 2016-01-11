@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" xml:id="name-type">
+    <status>finished</status>
+    <form>closed</form>
+    <basis>http://www.loc.gov/standards/mods/v3/mods-userguide-elements.html#name</basis>
+    <description/>
+    <notes/>
+    <items>
+        <item>
+            <value/>
+            <label>(none selected)</label>
+        </item>
+        <item>
+            <label>Conference Name</label>
+            <value>conference</value>
+        </item>
+        <item>
+            <label>Corporate Name</label>
+            <value>corporate</value>
+        </item>
+        <item>
+            <label>Family Name</label>
+            <value>family</value>
+        </item>
+        <item>
+            <label>Personal Name</label>
+            <value>personal</value>
+        </item>
+    </items>
+</code-table>
