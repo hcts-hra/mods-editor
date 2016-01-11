@@ -12,6 +12,7 @@ declare namespace ext="http://exist-db.org/mods/extension";
 declare namespace mads="http://www.loc.gov/mads/";
 declare namespace mods-editor = "http://hra.uni-heidelberg.de/ns/mods-editor/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
+declare namespace html = "http://www.w3.org/1999/xhtml";
 
 import module namespace mods-common = "http://exist-db.org/mods/common" at "../mods-common.xql";
 import module namespace config = "http://exist-db.org/mods/config" at "../config.xqm";
