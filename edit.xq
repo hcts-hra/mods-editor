@@ -298,18 +298,15 @@ declare function local:create-page-content($type-request as xs:string, $target-c
         <span class="info-line">
         {
             (
-                "Editing record of type "
+                <xf:output value="'Editing record of type '" />
                 ,                    
                 <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
                     <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
                 </xf:output>
                 ,
-                let $publication-title := concat(doc($record-data)/mods:mods/mods:titleInfo[string-length(@type) eq 0][1]/mods:nonSort, ' ', doc($record-data)/mods:mods/mods:titleInfo[string-length(@type) eq 0][1]/mods:title)
-                return
-                    (:Why the space here?:)
-                    if ($publication-title ne ' ') 
-                    then (' with the title ', <strong>{$publication-title}</strong>) 
-                    else ()
+                <xf:output value="', with the title '" />
+                ,
+                <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
             )
             }, to be saved in <strong> {
                 let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
