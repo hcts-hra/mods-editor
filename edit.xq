@@ -145,11 +145,8 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
     )
 };
 
-declare function local:create-xf-model($id as xs:string, $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
+declare function local:create-xf-model($record-id as xs:string, $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
     let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-    let $log := util:log("INFO", "$tabs")
-    let $log := util:log("INFO", $tabs/html:ul[1]/html:li[1]/html:a/text())
-    let $log := util:log("INFO", substring($tabs//html:div[@id = 'tab-1']//html:li[1]/html:a/@href, 2))
     
     return
         <xf:model id="m-main">
@@ -160,6 +157,8 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                     <scriptOfResource>{request:get-parameter("scriptOfResource", '')}</scriptOfResource>
                     <data-template-name>{$data-template-name}</data-template-name>
                     <host>{request:get-parameter('host', '')}</host>
+                    <target-collection>{$target-collection}</target-collection>
+                    <related-publication-title>{local:get-related-publication-title($record-id)}</related-publication-title>
                 </configuration>
             </xf:instance>   
 
@@ -171,7 +170,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                 </variables>
             </xf:instance>            
             
-           <xf:instance src="{concat('get-data-instance.xq?id=', $id, '&amp;data-template-name=', $data-template-name)}" id="save-data">
+           <xf:instance src="{concat('get-data-instance.xq?id=', $record-id, '&amp;data-template-name=', $data-template-name)}" id="save-data">
                 <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" />
            </xf:instance>
          
@@ -263,61 +262,29 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
         </xf:model>
 };
 
-declare function local:create-page-content($type-request as xs:string, $target-collection as xs:string, $record-data as xs:string, $tabs as item()+) as element(div) {
+declare function local:create-page-content($type-request as xs:string, $tabs as item()+) as element(div) {
     let $type-request := replace(replace($type-request, '-latin', ''), '-transliterated', '')
 
     (:If the record is hosted by a record linked to through an xlink:href, 
     display the title of this record. 
     Only the xlink on the first relatedItem with type host is processed.:)
     let $host := request:get-parameter('host', '')
-    let $related-item-xlink := doc($record-data)/mods:mods/mods:relatedItem[@type = 'host'][1]/@xlink:href
-    let $related-publication-id := 
-        if ($related-item-xlink) 
-        then replace($related-item-xlink[1]/string(), '^#?(.*)$', '$1') 
-        else ()
-    let $related-publication-title := 
-        if ($related-publication-id) 
-        then mods-common:get-short-title(collection($config:mods-root)//mods:mods[@ID eq $related-publication-id][1])
-        else ()
-    let $related-publication-title :=
-        (:Check for no string contents - the count may still be 1.:)
-        if ($related-item-xlink eq '')
-        then ()
-            else 
-            if (count($related-item-xlink) eq 1)
-            then
-            (<span class="intro">The publication is included in </span>, <a href="../../modules/search/index.html?search-field=ID&amp;value={$related-publication-id}&amp;query-tabs=advanced-search-form&amp;default-operator=and" target="_blank">{$related-publication-title}</a>,<span class="intro">.</span>)
-            else
-                (:Can the following occur, given that only one xlink is retrieved?:)
-                if (count($related-item-xlink) gt 1) 
-                then (<span class="intro">The publication is included in more than one publication.</span>)
-                else ()
-                
+    
     return
     <div id="main-content" xmlns="http://www.w3.org/1999/xhtml" class="content">
         <span class="info-line">
-        {
-            (
-                "Editing record of type "
-                ,                    
-                <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
-                    <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
-                </xf:output>
-                ,
-                let $publication-title := concat(doc($record-data)/mods:mods/mods:titleInfo[string-length(@type) eq 0][1]/mods:nonSort, ' ', doc($record-data)/mods:mods/mods:titleInfo[string-length(@type) eq 0][1]/mods:title)
-                return
-                    (:Why the space here?:)
-                    if ($publication-title ne ' ') 
-                    then (' with the title ', <strong>{$publication-title}</strong>) 
-                    else ()
-            )
-            }, to be saved in <strong> {
-                let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
-                return
-                    if ($target-collection-display eq security:get-user-credential-from-session()[1])
-                    then $config:data-collection-name || '/Home'
-                    else $target-collection-display
-            }</strong>.
+            <xf:output value="'Editing record of type '" />
+            <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
+                <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
+            </xf:output>
+            <xf:output value="', with the title '" />
+            <strong>
+                <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
+            </strong>
+            <xf:output value="', to be saved in '" />
+            <strong>
+                <xf:output value="concat(instance('i-configuration')/target-collection, '.')" />
+            </strong>              
         </span>
         {$tabs}
         <div class="save-buttons-top">    
@@ -330,7 +297,7 @@ declare function local:create-page-content($type-request as xs:string, $target-c
                 <xf:dispatch ev:event="DOMActivate" name="save-and-close-action" targetid="main-content"/>
             </xf:trigger>
             <span class="related-title">
-                    {$related-publication-title}
+                <xf:output value="instance('i-configuration')/related-publication-title" />
             </span>
         </div>            
         <div id="user-interface-container"/>
@@ -358,63 +325,72 @@ declare function local:create-page-content($type-request as xs:string, $target-c
     </div>
 };
 
-(:Find the record.:)
-let $record-id := request:get-parameter('id', '')
-let $temp-record-path := concat($config:mods-temp-collection, "/", $record-id,'.xml')
+declare function local:get-target-collection($target-collection as xs:string) {
+    let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
+    let $target-collection-display := 
+        if ($target-collection-display eq security:get-user-credential-from-session()[1])
+        then $config:data-collection-name || '/Home'
+        else $target-collection-display
+        
+    return $target-collection-display
+};
 
-(:If the record has been made with Tamoboti, it will have a template stored in <mods:extension>. 
-If a new record is being created, the template name has to be retrieved from the URL in order to serve the right subform.:)
-
-(:Get the type parameter which shows which record template has been chosen.:) 
-let $type-request := request:get-parameter('type', 'insert-templates')
-
-(:Sorting data is retrieved from the type-data.:)
-(:Sorting is done in session.xql in order to present the different template options in an intellegible way.:)
-(:If type-sort is '1', it is a compact form and the Basic Input Forms should be shown;
-If type-sort is '2', it is a compact form and the Basic Input Forms should be shown;
-if type-sort is 4, it is a mads record and the MADS forms should be shown; 
-otherwise it is a record not made with Tamboti and Title Information should be shown.:)
-let $type-request := replace(replace(replace($type-request, '-latin', ''), '-transliterated', ''), '-compact', '')
-
-(:Get the chosen location for the record.:)
-let $target-collection := xmldb:encode-uri(request:get-parameter("collection", ''))
-
-(:Get the id of the record, if it has one; otherwise mark it "new" in order to give it one.:)
-let $id-param := request:get-parameter('id', 'new')
-let $new-record := xs:boolean($id-param eq '' or $id-param eq 'new')
-(:If we do not have an incoming ID (the record has been made outside Tamboti) or if the record is new (made with Tamboti), then create an ID with util:uuid().:)
-let $id :=
-    if ($new-record)
-    then ''
-    else $id-param
-
-let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-let $data-template-name := 
-    if ($type-request = '')
-    then 'insert-templates'
+declare function local:get-data-template-name($type-request as xs:string, $transliterationOfResource as xs:string) {
+    if ($type-request = (
+                'suebs-tibetan', 
+                'suebs-chinese', 
+                'insert-templates', 
+                'new-instance', 
+                'mads'))
+    (:These document types do not divide into latin and transliterated.:)
+    then $type-request
     else
-        if ($type-request = (
-                    'suebs-tibetan', 
-                    'suebs-chinese', 
-                    'insert-templates', 
-                    'new-instance', 
-                    'mads'))
-        (:These document types do not divide into latin and transliterated.:)
-        then $type-request
-        else
-            (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
-            if ($transliterationOfResource) 
-            then concat($type-request, '-transliterated') 
-            else concat($type-request, '-latin')  
-            
-let $document-type := replace(replace($data-template-name, '-latin', ''), '-transliterated', '')
-let $log := util:log("INFO", "$type-request = " || $type-request)
-let $log := util:log("INFO", "$data-template-name = " || $data-template-name)
+        (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
+        if ($transliterationOfResource) 
+        then concat($type-request, '-transliterated') 
+        else concat($type-request, '-latin') 
+};
 
-(:NB: $style appears to be introduced in order to use the xf namespace in css.:)
-let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))/html:div
-let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
-let $content := local:create-page-content($data-template-name, $target-collection, $temp-record-path, $tabs)
+declare function local:get-related-publication-title($record-id as xs:string) {
+    if ($record-id != '')
+    then
+        let $related-item-xlink := collection($config:content-root)//mods:mods[@ID = $record-id]/mods:mods/mods:relatedItem[@type = 'host'][1]/@xlink:href
+        let $related-publication-id := 
+            if ($related-item-xlink) 
+            then replace($related-item-xlink[1]/string(), '^#?(.*)$', '$1') 
+            else ()
+        let $related-publication-title := 
+            if ($related-publication-id) 
+            then mods-common:get-short-title(collection($config:mods-root)//mods:mods[@ID eq $related-publication-id][1])
+            else ()
+        let $related-publication-title :=
+            (:Check for no string contents - the count may still be 1.:)
+            if ($related-item-xlink eq '')
+            then ()
+                else 
+                if (count($related-item-xlink) eq 1)
+                then
+                (<span class="intro">The publication is included in </span>, <a href="../../modules/search/index.html?search-field=ID&amp;value={$related-publication-id}&amp;query-tabs=advanced-search-form&amp;default-operator=and" target="_blank">{$related-publication-title}</a>,<span class="intro">.</span>)
+                else
+                    (:Can the following occur, given that only one xlink is retrieved?:)
+                    if (count($related-item-xlink) gt 1) 
+                    then (<span class="intro">The publication is included in more than one publication.</span>)
+                    else ()
+                    
+        return $related-publication-title
+    else ''
+};
+
+let $document-type := request:get-parameter('type', 'insert-templates')
+let $document-type := replace(replace(replace($document-type, '-latin', ''), '-transliterated', ''), '-compact', '')
+let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
+let $record-id := request:get-parameter('id', '')
+let $data-template-name := local:get-data-template-name($document-type, $transliterationOfResource)
+let $target-collection := local:get-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
+
+let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
+let $model := local:create-xf-model($record-id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
+let $content := local:create-page-content($data-template-name, $tabs)
 
 return 
     (util:declare-option("exist:serialize", "method=xhtml5 media-type=text/html output-doctype=yes indent=yes encoding=utf-8")
