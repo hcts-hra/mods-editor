@@ -1,6 +1,9 @@
 <div xmlns="http://www.w3.org/1999/xhtml" id="tabs-container">
     <ul>
         <li>
+            <a href="#tab-1">Basic Input Forms</a>
+        </li>    
+        <li>
             <a href="#tab-2">Citation Forms</a>
         </li>
         <li>
@@ -14,6 +17,24 @@
         </li>
     </ul>
     <div id="subtabs-container">
+        <div id="tab-1">
+            <div class="subtabs">
+                <ul>
+                    <li>
+                        <a href="#compact-a">Article</a>
+                    </li>
+                    <li>
+                        <a href="#compact-b-article">Periodical</a>
+                    </li>
+                    <li>
+                        <a href="#compact-c">Contents of Article</a>
+                    </li>
+                </ul>
+                <div id="compact-a"/>
+                <div id="compact-b-article"/>
+                <div id="compact-c"/>
+            </div>
+        </div>    
         <div id="tab-2">
             <div class="subtabs">
                 <ul>
