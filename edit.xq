@@ -262,7 +262,7 @@ declare function local:create-xf-model($record-id as xs:string, $target-collecti
         </xf:model>
 };
 
-declare function local:create-page-content($type-request as xs:string, $record-data as xs:string, $tabs as item()+) as element(div) {
+declare function local:create-page-content($type-request as xs:string, $tabs as item()+) as element(div) {
     let $type-request := replace(replace($type-request, '-latin', ''), '-transliterated', '')
 
     (:If the record is hosted by a record linked to through an xlink:href, 
@@ -336,22 +336,19 @@ declare function local:get-target-collection($target-collection as xs:string) {
 };
 
 declare function local:get-data-template-name($type-request as xs:string, $transliterationOfResource as xs:string) {
-    if ($type-request = '')
-    then 'insert-templates'
+    if ($type-request = (
+                'suebs-tibetan', 
+                'suebs-chinese', 
+                'insert-templates', 
+                'new-instance', 
+                'mads'))
+    (:These document types do not divide into latin and transliterated.:)
+    then $type-request
     else
-        if ($type-request = (
-                    'suebs-tibetan', 
-                    'suebs-chinese', 
-                    'insert-templates', 
-                    'new-instance', 
-                    'mads'))
-        (:These document types do not divide into latin and transliterated.:)
-        then $type-request
-        else
-            (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
-            if ($transliterationOfResource) 
-            then concat($type-request, '-transliterated') 
-            else concat($type-request, '-latin') 
+        (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
+        if ($transliterationOfResource) 
+        then concat($type-request, '-transliterated') 
+        else concat($type-request, '-latin') 
 };
 
 declare function local:get-related-publication-title($record-id as xs:string) {
@@ -384,36 +381,16 @@ declare function local:get-related-publication-title($record-id as xs:string) {
     else ''
 };
 
-(:Find the record.:)
-let $record-id := request:get-parameter('id', '')
-let $temp-record-path := concat($config:mods-temp-collection, "/", $record-id,'.xml')
-
-(:If the record has been made with Tamoboti, it will have a template stored in <mods:extension>. 
-If a new record is being created, the template name has to be retrieved from the URL in order to serve the right subform.:)
-
-(:Get the type parameter which shows which record template has been chosen.:) 
-let $type-request := request:get-parameter('type', 'insert-templates')
-
-(:Sorting data is retrieved from the type-data.:)
-(:Sorting is done in session.xql in order to present the different template options in an intellegible way.:)
-(:If type-sort is '1', it is a compact form and the Basic Input Forms should be shown;
-If type-sort is '2', it is a compact form and the Basic Input Forms should be shown;
-if type-sort is 4, it is a mads record and the MADS forms should be shown; 
-otherwise it is a record not made with Tamboti and Title Information should be shown.:)
-let $type-request := replace(replace(replace($type-request, '-latin', ''), '-transliterated', ''), '-compact', '')
-
+let $document-type := request:get-parameter('type', 'insert-templates')
+let $document-type := replace(replace(replace($document-type, '-latin', ''), '-transliterated', ''), '-compact', '')
 let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-
 let $record-id := request:get-parameter('id', '')
-let $data-template-name := local:get-data-template-name($type-request, $transliterationOfResource)
+let $data-template-name := local:get-data-template-name($document-type, $transliterationOfResource)
 let $target-collection := local:get-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
-            
-let $document-type := replace(replace($data-template-name, '-latin', ''), '-transliterated', '')
 
-(:NB: $style appears to be introduced in order to use the xf namespace in css.:)
-let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))/html:div
+let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
 let $model := local:create-xf-model($record-id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
-let $content := local:create-page-content($data-template-name, $temp-record-path, $tabs)
+let $content := local:create-page-content($data-template-name, $tabs)
 
 return 
     (util:declare-option("exist:serialize", "method=xhtml5 media-type=text/html output-doctype=yes indent=yes encoding=utf-8")
