@@ -160,6 +160,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
                     <scriptOfResource>{request:get-parameter("scriptOfResource", '')}</scriptOfResource>
                     <data-template-name>{$data-template-name}</data-template-name>
                     <host>{request:get-parameter('host', '')}</host>
+                    <target-collection>{$target-collection}</target-collection>
                 </configuration>
             </xf:instance>   
 
@@ -263,7 +264,7 @@ declare function local:create-xf-model($id as xs:string, $target-collection as x
         </xf:model>
 };
 
-declare function local:create-page-content($type-request as xs:string, $target-collection as xs:string, $record-data as xs:string, $tabs as item()+) as element(div) {
+declare function local:create-page-content($type-request as xs:string, $record-data as xs:string, $tabs as item()+) as element(div) {
     let $type-request := replace(replace($type-request, '-latin', ''), '-transliterated', '')
 
     (:If the record is hosted by a record linked to through an xlink:href, 
@@ -296,25 +297,18 @@ declare function local:create-page-content($type-request as xs:string, $target-c
     return
     <div id="main-content" xmlns="http://www.w3.org/1999/xhtml" class="content">
         <span class="info-line">
-        {
-            (
-                <xf:output value="'Editing record of type '" />
-                ,                    
-                <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
-                    <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
-                </xf:output>
-                ,
-                <xf:output value="', with the title '" />
-                ,
+            <xf:output value="'Editing record of type '" />
+            <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
+                <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
+            </xf:output>
+            <xf:output value="', with the title '" />
+            <strong>
                 <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
-            )
-            }, to be saved in <strong> {
-                let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
-                return
-                    if ($target-collection-display eq security:get-user-credential-from-session()[1])
-                    then $config:data-collection-name || '/Home'
-                    else $target-collection-display
-            }</strong>.
+            </strong>
+            <xf:output value="', to be saved in '" />
+            <strong>
+                <xf:output value="concat(instance('i-configuration')/target-collection, '.')" />
+            </strong>              
         </span>
         {$tabs}
         <div class="save-buttons-top">    
@@ -355,6 +349,16 @@ declare function local:create-page-content($type-request as xs:string, $target-c
     </div>
 };
 
+declare function local:calculate-target-collection($target-collection as xs:string) {
+    let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
+    let $target-collection-display := 
+        if ($target-collection-display eq security:get-user-credential-from-session()[1])
+        then $config:data-collection-name || '/Home'
+        else $target-collection-display
+        
+    return $target-collection-display
+};
+
 (:Find the record.:)
 let $record-id := request:get-parameter('id', '')
 let $temp-record-path := concat($config:mods-temp-collection, "/", $record-id,'.xml')
@@ -374,7 +378,7 @@ otherwise it is a record not made with Tamboti and Title Information should be s
 let $type-request := replace(replace(replace($type-request, '-latin', ''), '-transliterated', ''), '-compact', '')
 
 (:Get the chosen location for the record.:)
-let $target-collection := xmldb:encode-uri(request:get-parameter("collection", ''))
+let $target-collection := local:calculate-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
 
 (:Get the id of the record, if it has one; otherwise mark it "new" in order to give it one.:)
 let $id-param := request:get-parameter('id', 'new')
@@ -411,7 +415,7 @@ let $log := util:log("INFO", "$data-template-name = " || $data-template-name)
 (:NB: $style appears to be introduced in order to use the xf namespace in css.:)
 let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))/html:div
 let $model := local:create-xf-model($id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
-let $content := local:create-page-content($data-template-name, $target-collection, $temp-record-path, $tabs)
+let $content := local:create-page-content($data-template-name, $temp-record-path, $tabs)
 
 return 
     (util:declare-option("exist:serialize", "method=xhtml5 media-type=text/html output-doctype=yes indent=yes encoding=utf-8")
