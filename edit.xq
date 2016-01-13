@@ -349,7 +349,7 @@ declare function local:create-page-content($type-request as xs:string, $record-d
     </div>
 };
 
-declare function local:calculate-target-collection($target-collection as xs:string) {
+declare function local:get-target-collection($target-collection as xs:string) {
     let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
     let $target-collection-display := 
         if ($target-collection-display eq security:get-user-credential-from-session()[1])
@@ -357,6 +357,25 @@ declare function local:calculate-target-collection($target-collection as xs:stri
         else $target-collection-display
         
     return $target-collection-display
+};
+
+declare function local:get-data-template-name($type-request as xs:string, $transliterationOfResource as xs:string) {
+    if ($type-request = '')
+    then 'insert-templates'
+    else
+        if ($type-request = (
+                    'suebs-tibetan', 
+                    'suebs-chinese', 
+                    'insert-templates', 
+                    'new-instance', 
+                    'mads'))
+        (:These document types do not divide into latin and transliterated.:)
+        then $type-request
+        else
+            (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
+            if ($transliterationOfResource) 
+            then concat($type-request, '-transliterated') 
+            else concat($type-request, '-latin') 
 };
 
 (:Find the record.:)
@@ -377,9 +396,6 @@ if type-sort is 4, it is a mads record and the MADS forms should be shown;
 otherwise it is a record not made with Tamboti and Title Information should be shown.:)
 let $type-request := replace(replace(replace($type-request, '-latin', ''), '-transliterated', ''), '-compact', '')
 
-(:Get the chosen location for the record.:)
-let $target-collection := local:calculate-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
-
 (:Get the id of the record, if it has one; otherwise mark it "new" in order to give it one.:)
 let $id-param := request:get-parameter('id', 'new')
 let $new-record := xs:boolean($id-param eq '' or $id-param eq 'new')
@@ -390,27 +406,11 @@ let $id :=
     else $id-param
 
 let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-let $data-template-name := 
-    if ($type-request = '')
-    then 'insert-templates'
-    else
-        if ($type-request = (
-                    'suebs-tibetan', 
-                    'suebs-chinese', 
-                    'insert-templates', 
-                    'new-instance', 
-                    'mads'))
-        (:These document types do not divide into latin and transliterated.:)
-        then $type-request
-        else
-            (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
-            if ($transliterationOfResource) 
-            then concat($type-request, '-transliterated') 
-            else concat($type-request, '-latin')  
+
+let $data-template-name := local:get-data-template-name($type-request, $transliterationOfResource)
+let $target-collection := local:get-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
             
 let $document-type := replace(replace($data-template-name, '-latin', ''), '-transliterated', '')
-let $log := util:log("INFO", "$type-request = " || $type-request)
-let $log := util:log("INFO", "$data-template-name = " || $data-template-name)
 
 (:NB: $style appears to be introduced in order to use the xf namespace in css.:)
 let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $type-request, '-stand-alone.xml'))/html:div
