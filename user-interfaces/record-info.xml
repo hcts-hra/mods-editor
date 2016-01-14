@@ -165,7 +165,7 @@ s	            </xf:trigger>
                                     <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset model="m-ui" nodeset="id('language-3-type-sorted', instance('code-tables'))/*:items/*:item">
+                            <xf:itemset model="m-ui" nodeset="id('language-3-type-sorted', instance('i-code-tables'))/*:items/*:item">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -178,7 +178,7 @@ s	            </xf:trigger>
                                     <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('script', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('script', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -191,7 +191,7 @@ s	            </xf:trigger>
                                     <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('transliteration', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('transliteration', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -204,7 +204,7 @@ s	            </xf:trigger>
                                     <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -306,7 +306,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_authority',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('record-content-source-authority', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('record-content-source-authority', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -337,7 +337,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-3-type-sorted', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-3-type-sorted', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -350,7 +350,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('script', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('script', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -363,7 +363,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('transliteration', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('transliteration', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -376,7 +376,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -491,7 +491,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_date-encoding',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-encoding', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-encoding', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -504,7 +504,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_point',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-point', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -517,7 +517,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_keyDate',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-keydate', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-keydate', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -530,7 +530,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_qualifier',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-qualifier', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-qualifier', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -543,7 +543,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_originInfo-lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -556,7 +556,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_originInfo-script',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('script-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -569,7 +569,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -582,7 +582,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -701,7 +701,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_date-encoding',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-encoding', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-encoding', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -714,7 +714,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_point',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-point', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-point', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -727,7 +727,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_keyDate',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-keydate', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-keydate', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -740,7 +740,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_qualifier',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('date-qualifier', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('date-qualifier', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -753,7 +753,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_originInfo-lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -766,7 +766,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_originInfo-script',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('script-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -779,7 +779,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -792,7 +792,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -890,7 +890,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_record-content-source',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('record-content-source-authority', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('record-content-source-authority', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -903,7 +903,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -916,7 +916,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('script-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -929,7 +929,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -942,7 +942,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1033,7 +1033,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1046,7 +1046,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('script-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1059,7 +1059,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1072,7 +1072,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1181,7 +1181,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_altRepGroup',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('altRepGroup', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('altRepGroup', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1212,7 +1212,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_usage',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('usage-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('usage-type', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1321,7 +1321,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_authority',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-authority', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-authority', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1343,7 +1343,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_code-text',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('code-text', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('code-text', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1365,7 +1365,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1378,7 +1378,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('script-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1391,7 +1391,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1404,7 +1404,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1417,7 +1417,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_languageTerm',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-3-type-sorted', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-3-type-sorted', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1538,7 +1538,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1551,7 +1551,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_authority',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-authority', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-authority', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1573,7 +1573,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_code-text',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('code-text', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('code-text', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1595,7 +1595,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1608,7 +1608,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('script-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('script-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1621,7 +1621,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1634,7 +1634,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1647,7 +1647,7 @@ s	            </xf:trigger>
                                                             <xf:hint ref="id('hint-code_scriptTerm',instance('i-hint-codes'))/*:help"/>
                                                         </xf:output>
                                                     </xf:label>
-                                                    <xf:itemset nodeset="id('script', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                    <xf:itemset nodeset="id('script', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                         <xf:label ref="*:label"/>
                                                         <xf:value ref="*:value"/>
                                                     </xf:itemset>
@@ -1764,7 +1764,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_authority',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('description-standard-authority', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('description-standard-authority', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1795,7 +1795,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-3-type-sorted', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-3-type-sorted', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1808,7 +1808,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_script',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('script', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('script', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1821,7 +1821,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_transliteration',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('transliteration', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('transliteration', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>
@@ -1834,7 +1834,7 @@ s	            </xf:trigger>
                                                 <xf:hint ref="id('hint-code_xml_lang',instance('i-hint-codes'))/*:help"/>
                                             </xf:output>
                                         </xf:label>
-                                        <xf:itemset nodeset="id('language-2-type-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                        <xf:itemset nodeset="id('language-2-type-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                             <xf:label ref="*:label"/>
                                             <xf:value ref="*:value"/>
                                         </xf:itemset>

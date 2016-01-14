@@ -39,7 +39,7 @@
                             <xf:group ref=".[(@transliteration)]">
                                 <xf:select1 ref="/mods:mods/mods:extension/ext:transliterationOfResource">
                                     <xf:label>Transliteration</xf:label>
-                                    <xf:itemset nodeset="id('transliteration-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('transliteration-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>
@@ -48,7 +48,7 @@
                             <xf:group ref=".[string-length(@lang) &gt; 0]">
                                 <xf:select1 ref="./@lang">
                                     <xf:label>Language</xf:label>
-                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('language-3-type-sorted-short', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>
@@ -102,7 +102,7 @@
                                             <xf:label>
                                                 <xf:output value="if (../.[@script='Latn']) then 'Transliterated' else ''"/>
                                             </xf:label>
-                                            <xf:itemset nodeset="id('name-part-type-compact', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                            <xf:itemset nodeset="id('name-part-type-compact', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                 <xf:label ref="*:label"/>
                                                 <xf:value ref="*:value"/>
                                             </xf:itemset>
@@ -189,7 +189,7 @@
                             <xf:group class="margin-plus" appearance="full">
                                 <xf:select1 ref="./@type">
                                     <xf:label>Type</xf:label>
-                                    <xf:itemset nodeset="id('identifier-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('identifier-type', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>
