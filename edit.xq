@@ -145,7 +145,7 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
     )
 };
 
-declare function local:create-xf-model($record-id as xs:string, $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
+declare function local:create-xf-model($data-instance as node(), $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
     let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
     
     return
@@ -157,8 +157,9 @@ declare function local:create-xf-model($record-id as xs:string, $target-collecti
                     <scriptOfResource>{request:get-parameter("scriptOfResource", '')}</scriptOfResource>
                     <data-template-name>{$data-template-name}</data-template-name>
                     <host>{request:get-parameter('host', '')}</host>
+                    <initial-ui-id>{substring($tabs//html:div[@id = 'tab-1']//html:li[1]/html:a/@href, 2)}</initial-ui-id>
                     <target-collection>{$target-collection}</target-collection>
-                    <related-publication-title>{local:get-related-publication-title($record-id)}</related-publication-title>
+                    <related-publication-title>{local:get-related-publication-title($data-instance)}</related-publication-title>
                 </configuration>
             </xf:instance>   
 
@@ -166,12 +167,11 @@ declare function local:create-xf-model($record-id as xs:string, $target-collecti
                 <variables xmlns="">
                     <subform-relative-path />
                     <compact-name-delete />
-                    <initial-ui-id>{substring($tabs//html:div[@id = 'tab-1']//html:li[1]/html:a/@href, 2)}</initial-ui-id>
                 </variables>
             </xf:instance>            
             
-           <xf:instance src="{concat('get-data-instance.xq?id=', $record-id, '&amp;data-template-name=', $data-template-name)}" id="save-data">
-                <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" />
+           <xf:instance id="save-data">
+                {$data-instance}
            </xf:instance>
          
            <!--The instance insert-templates contain an almost full embodiment of the MODS schema, version 3.5; 
@@ -235,7 +235,7 @@ declare function local:create-xf-model($record-id as xs:string, $target-collecti
 
             <xf:action ev:event="xforms-ready">
                <xf:load show="embed" targetid="user-interface-container">
-                    <xf:resource value="concat('user-interfaces/', instance('i-variables')/initial-ui-id, '.xml#user-interface-container')"/>
+                    <xf:resource value="concat('user-interfaces/', instance('i-configuration')/initial-ui-id, '.xml#user-interface-container')"/>
                 </xf:load>
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:languageTerm" value="instance('i-configuration')/languageOfResource" />
                 <xf:setvalue ref="instance('save-data')/mods:language/mods:scriptTerm" value="instance('i-configuration')/scriptOfResource" />
@@ -351,45 +351,57 @@ declare function local:get-data-template-name($type-request as xs:string, $trans
         else concat($type-request, '-latin') 
 };
 
-declare function local:get-related-publication-title($record-id as xs:string) {
-    if ($record-id != '')
-    then
-        let $related-item-xlink := collection($config:content-root)//mods:mods[@ID = $record-id]/mods:mods/mods:relatedItem[@type = 'host'][1]/@xlink:href
-        let $related-publication-id := 
-            if ($related-item-xlink) 
-            then replace($related-item-xlink[1]/string(), '^#?(.*)$', '$1') 
-            else ()
-        let $related-publication-title := 
-            if ($related-publication-id) 
-            then mods-common:get-short-title(collection($config:mods-root)//mods:mods[@ID eq $related-publication-id][1])
-            else ()
-        let $related-publication-title :=
-            (:Check for no string contents - the count may still be 1.:)
-            if ($related-item-xlink eq '')
-            then ()
-                else 
-                if (count($related-item-xlink) eq 1)
-                then
-                (<span class="intro">The publication is included in </span>, <a href="../../modules/search/index.html?search-field=ID&amp;value={$related-publication-id}&amp;query-tabs=advanced-search-form&amp;default-operator=and" target="_blank">{$related-publication-title}</a>,<span class="intro">.</span>)
-                else
-                    (:Can the following occur, given that only one xlink is retrieved?:)
-                    if (count($related-item-xlink) gt 1) 
-                    then (<span class="intro">The publication is included in more than one publication.</span>)
-                    else ()
-                    
-        return $related-publication-title
-    else ''
+declare function local:get-related-publication-title($data-instance as node()) {
+    let $related-item-xlink := $data-instance/mods:mods/mods:relatedItem[@type = 'host'][1]/@xlink:href
+    let $related-publication-id := 
+        if ($related-item-xlink) 
+        then replace($related-item-xlink[1]/string(), '^#?(.*)$', '$1') 
+        else ()
+    let $related-publication-title := 
+        if ($related-publication-id) 
+        then mods-common:get-short-title(collection($config:mods-root)//mods:mods[@ID eq $related-publication-id][1])
+        else ()
+    let $related-publication-title :=
+        (:Check for no string contents - the count may still be 1.:)
+        if ($related-item-xlink eq '')
+        then ()
+            else 
+            if (count($related-item-xlink) eq 1)
+            then
+            (<span class="intro">The publication is included in </span>, <a href="../../modules/search/index.html?search-field=ID&amp;value={$related-publication-id}&amp;query-tabs=advanced-search-form&amp;default-operator=and" target="_blank">{$related-publication-title}</a>,<span class="intro">.</span>)
+            else
+                (:Can the following occur, given that only one xlink is retrieved?:)
+                if (count($related-item-xlink) gt 1) 
+                then (<span class="intro">The publication is included in more than one publication.</span>)
+                else ()
+                
+    return $related-publication-title
 };
 
+declare function local:get-data-instance($record-id as xs:string, $data-template-name as xs:string) {
+    if ($record-id != '')
+    then collection($config:content-root)//mods:mods[@ID = $record-id]
+    else doc(concat($config:edit-app-root, '/data-templates/', $data-template-name, '.xml'))    
+};
+
+declare function local:get-document-type($schema-location as xs:string) {
+    replace(replace(replace(substring-after($schema-location, "http://cluster-schemas.uni-hd.de/mods-"), '.xsd', ''), '-latin', ''), '-transliterated', '')
+};
+
+let $record-id := request:get-parameter('id', '')
 let $document-type := request:get-parameter('type', 'insert-templates')
 let $document-type := replace(replace(replace($document-type, '-latin', ''), '-transliterated', ''), '-compact', '')
 let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-let $record-id := request:get-parameter('id', '')
+
 let $data-template-name := local:get-data-template-name($document-type, $transliterationOfResource)
 let $target-collection := local:get-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
 
+let $data-instance := local:get-data-instance($record-id, $data-template-name)
+let $document-type := if ($record-id != '') then local:get-document-type($data-instance/@xsi:schemaLocation) else $document-type
+let $data-template-name := if ($record-id != '') then local:get-data-template-name($document-type, $transliterationOfResource) else $data-template-name
+
 let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
-let $model := local:create-xf-model($record-id, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
+let $model := local:create-xf-model($data-instance, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
 let $content := local:create-page-content($data-template-name, $tabs)
 
 return 
