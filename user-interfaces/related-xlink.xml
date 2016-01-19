@@ -3167,12 +3167,6 @@
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group ref=".[not(mods:relatedItem)]" appearance="full">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Related Item</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:relatedItem" origin="instance('new-instance')/mods:relatedItem" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

@@ -1562,12 +1562,6 @@
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:part)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Part</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:mods" origin="instance('new-instance')/mods:part" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

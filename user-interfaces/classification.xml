@@ -261,13 +261,6 @@
                     </xf:input>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:classification)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing
-	                        Classification</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:classification" origin="instance('new-instance')/mods:classification" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

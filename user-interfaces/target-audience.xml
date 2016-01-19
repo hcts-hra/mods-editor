@@ -237,12 +237,6 @@
                     </xf:select1>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:targetAudience)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Target Audience</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:targetAudience" origin="instance('new-instance')/mods:targetAudience" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

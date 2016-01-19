@@ -224,12 +224,6 @@
                     </xf:textarea>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:abstract)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Abstract</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:abstract" origin="instance('new-instance')/mods:abstract" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

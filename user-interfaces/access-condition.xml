@@ -209,12 +209,6 @@
                     </xf:textarea>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:accessCondition)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Access Condition</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:accessCondition" origin="instance('new-instance')/mods:accessCondition" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

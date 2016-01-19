@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:ext="http://exist-db.org/mods/extension" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xlink="http://www.w3.org/1999/xlink" id="user-interface-container" class="record-info block-form">
     <div style="display:none">
         <xf:model id="m-ui">
@@ -143,7 +142,7 @@ s	            </xf:trigger>
                                     <xf:hint ref="id('hint-code_altRepGroup',instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset model="m-ui" nodeset="instance('i-altRepGroup-code')/*:items/*:item">
+                            <xf:itemset nodeset="instance('i-altRepGroup-code')/*:items/*:item" model="m-ui">
                                 <xf:label ref="label"/>
                                 <xf:value ref="value"/>
                             </xf:itemset>
@@ -165,7 +164,7 @@ s	            </xf:trigger>
                                     <xf:hint ref="id('hint-code_lang',instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset model="m-ui" nodeset="id('language-3-type-sorted', instance('i-code-tables'))/*:items/*:item">
+                            <xf:itemset nodeset="id('language-3-type-sorted', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -1852,12 +1851,6 @@ s	            </xf:trigger>
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:recordInfo)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Record Information</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:recordInfo" origin="instance('new-instance')/mods:recordInfo" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

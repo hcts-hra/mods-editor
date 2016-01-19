@@ -1088,12 +1088,6 @@
                         </fieldset>
                     </xf:group>
                 </xf:repeat>
-                <xf:group appearance="full" ref=".[not(mads:name)]">
-                    <xf:trigger class="add-button">
-                        <xf:label>Add Missing Name</xf:label>
-                        <xf:insert nodeset="instance('save-data')/mads:mods" origin="instance('new-instance')/mads:name" ev:event="DOMActivate"/>
-                    </xf:trigger>
-                </xf:group>
             </fieldset>
         </xf:repeat>
     </xf:group>

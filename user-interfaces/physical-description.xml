@@ -976,12 +976,6 @@
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group ref=".[not(mods:physicalDescription)]" appearance="full">
-                <xf:trigger>
-                    <xf:label class="xforms-group-label-centered">Add Missing Physical Description</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:physicalDescription" origin="instance('new-instance')/mods:physicalDescription" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

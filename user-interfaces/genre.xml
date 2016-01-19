@@ -317,12 +317,6 @@
                     </xf:group>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:genre)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Genre</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:genre" origin="instance('new-instance')/mods:genre" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

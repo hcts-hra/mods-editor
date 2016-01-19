@@ -8426,12 +8426,6 @@
                                 </fieldset>
                             </xf:group>
                         </xf:repeat>
-                        <xf:group ref=".[not(mods:physicalDescription)]" appearance="full">
-                            <xf:trigger>
-                                <xf:label class="xforms-group-label-centered">Add Missing Physical Description</xf:label>
-                                <xf:insert nodeset="instance('save-data')/mods:physicalDescription" origin="instance('new-instance')/mods:physicalDescription" ev:event="DOMActivate"/>
-                            </xf:trigger>
-                        </xf:group>
                     </fieldset>
                 </xf:group>
                 <xf:group ref=".[mods:targetAudience]">
@@ -8664,10 +8658,6 @@
                                 </xf:select1>
                             </xf:group>
                         </xf:repeat>
-                        <xf:trigger class="add-button" ref=".[not(mods:targetAudience)]">
-                            <xf:label class="xforms-group-label-centered">Add Missing Target Audience</xf:label>
-                            <xf:insert nodeset="instance('save-data')/mods:targetAudience" origin="instance('new-instance')/mods:targetAudience" ev:event="DOMActivate"/>
-                        </xf:trigger>
                     </fieldset>
                 </xf:group>
                 <xf:group ref=".[mods:note]">
@@ -8895,10 +8885,6 @@
                                 </xf:textarea>
                             </xf:group>
                         </xf:repeat>
-                        <xf:trigger class="add-button" ref=".[not(mods:note)]">
-                            <xf:label class="xforms-group-label-centered">Add Missing Note</xf:label>
-                            <xf:insert nodeset="instance('save-data')/mods:note" origin="instance('new-instance')/mods:note" ev:event="DOMActivate"/>
-                        </xf:trigger>
                     </fieldset>
                 </xf:group>
                 <xf:group ref=".[mods:classification]">
@@ -9155,12 +9141,6 @@
                                 </xf:input>
                             </xf:group>
                         </xf:repeat>
-                        <xf:group ref=".[not(mods:classification)]" appearance="full">
-                            <xf:trigger class="add-button">
-                                <xf:label class="xforms-group-label-centered">Add Missing Classification</xf:label>
-                                <xf:insert nodeset="instance('save-data')/mods:classification" origin="instance('new-instance')/mods:classification" ev:event="DOMActivate"/>
-                            </xf:trigger>
-                        </xf:group>
                     </fieldset>
                 </xf:group>
                 <xf:group ref=".[mods:identifier]">
@@ -9366,11 +9346,7 @@
                                     </xf:label>
                                 </xf:input>
                             </xf:group>
-                        </xf:repeat><!--identifier repeat ends-->
-                        <xf:trigger class="add-button" ref=".[not(mods:identifier)]">
-                            <xf:label class="xforms-group-label-centered">Add Missing Identifier</xf:label>
-                            <xf:insert nodeset="instance('save-data')/mods:identifier" origin="instance('new-instance')/mods:identifier" ev:event="DOMActivate"/>
-                        </xf:trigger>
+                        </xf:repeat>
                     </fieldset>
                 </xf:group>
                 <xf:group ref=".[mods:relatedItem]">
@@ -10955,12 +10931,6 @@
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group ref=".[not(mods:relatedItem)]" appearance="full">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Related Item</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:relatedItem" origin="instance('new-instance')/mods:relatedItem" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

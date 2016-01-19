@@ -5763,12 +5763,6 @@
                         </fieldset>
                     </xf:group>
                 </xf:repeat>
-                <xf:group appearance="full" ref=".[not(mods:subject)]">
-                    <xf:trigger class="add-button">
-                        <xf:label class="xforms-group-label-centered">Add Missing Subject</xf:label>
-                        <xf:insert nodeset="instance('save-data')/mods:subject" origin="instance('new-instance')/mods:subject" ev:event="DOMActivate"/>
-                    </xf:trigger>
-                </xf:group>
             </fieldset>
         </div>
     </xf:group>

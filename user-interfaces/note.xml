@@ -230,12 +230,6 @@
                     </xf:textarea>
                 </xf:group>
             </xf:repeat>
-            <xf:group ref=".[not(mods:note)]" appearance="full">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Note</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:note" origin="instance('new-instance')/mods:note" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

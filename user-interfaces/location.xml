@@ -1701,12 +1701,6 @@
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:location)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Location</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:location" origin="instance('new-instance')/mods:location" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

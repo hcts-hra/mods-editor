@@ -664,12 +664,6 @@ s	                        </xf:trigger>
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:language)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Resource Language</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:language" origin="instance('new-instance')/mods:language" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>
