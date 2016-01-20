@@ -17,7 +17,6 @@ declare namespace html = "http://www.w3.org/1999/xhtml";
 import module namespace mods-common = "http://exist-db.org/mods/common" at "../mods-common.xql";
 import module namespace config = "http://exist-db.org/mods/config" at "../config.xqm";
 import module namespace security = "http://exist-db.org/mods/security" at "../search/security.xqm"; (:TODO move security module up one level:)
-import module namespace functx = "http://www.functx.com";
 
 (:The following variables are used for a kind of dynamic theming.:)
 declare variable $theme := substring-before(substring-after(request:get-url(), "/apps/"), "/modules/edit/edit.xq");
@@ -252,9 +251,6 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
                 <xf:load show="embed" targetid="user-interface-container">
                     <xf:resource value="instance('i-variables')/subform-relative-path" />
                 </xf:load>
-                <xf:rebuild model="m-main"/>
-                <xf:recalculate model="m-main"/>
-                <xf:refresh model="m-main"/>
             </xf:action>            
            <xf:action ev:event="save-and-close-action" ev:observer="main-content">
                <xf:send submission="save-and-close-submission" />

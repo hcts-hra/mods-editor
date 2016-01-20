@@ -1,10 +1,7 @@
 xquery version "3.0";
 
 import module namespace config = "http://exist-db.org/mods/config" at "../config.xqm";
-import module namespace request = "http://exist-db.org/xquery/request";
-import module namespace xmldb = "http://exist-db.org/xquery/xmldb";
 
-declare namespace xf = "http://www.w3.org/2002/xforms";
 declare namespace mods-editor = "http://hra.uni-heidelberg.de/ns/mods-editor/";
 declare option exist:serialize "method=xml media-type=text/xml indent=yes";
 
@@ -33,10 +30,10 @@ declare option exist:serialize "method=xml media-type=text/xml indent=yes";
 :
 : @return The most recently modified date of all the resources
 :)
-declare function local:get-last-modified($collection-path as xs:string, $resource-names as xs:string+) as xs:dateTime {
+declare function local:get-last-modified($collection-path as xs:string, $code-table-ids as xs:string+) as xs:dateTime {
     fn:max(
-        for $resource-name in $resource-names
-        return xmldb:last-modified($collection-path, $resource-name)
+        for $code-table-id in $code-table-ids
+        return xmldb:last-modified($collection-path, concat($code-table-id, '.xml'))
     )
 };
 
@@ -44,15 +41,10 @@ let $code-table-ids := request:get-parameter('code-table-ids', '')
 let $code-table-ids := tokenize($code-table-ids, ',')
 
 let $code-table-collection := concat($config:edit-app-root, '/code-tables/')
-let $code-tables :=
-    for $code-table-id in $code-table-ids
-    return collection($code-table-collection)/mods-editor:code-table[@xml:id = $code-table-id]
+let $code-tables := collection($code-table-collection)/mods-editor:code-table[@xml:id = $code-table-ids]
 
 (: generate etag :)
-let $last-modified := local:get-last-modified($code-table-collection,
-    for $code-table-id in $code-table-ids
-    return concat($code-table-id, '.xml')
-)
+let $last-modified := local:get-last-modified($code-table-collection, $code-table-ids)
 
 (:NB: hint.xml is not covered by etag.:)
 let $etag := $last-modified
