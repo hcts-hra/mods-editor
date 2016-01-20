@@ -220,7 +220,7 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
            
            <!--Save in target collection-->
            <xf:submission 
-                id="save-and-close-submission" 
+                id="s-save" 
                 method="post"
                 ref="instance('save-data')"
                 resource="save.xq?collection={$target-collection}&amp;action=close" replace="none">
@@ -251,10 +251,7 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
                 <xf:load show="embed" targetid="user-interface-container">
                     <xf:resource value="instance('i-variables')/subform-relative-path" />
                 </xf:load>
-            </xf:action>            
-           <xf:action ev:event="save-and-close-action" ev:observer="main-content">
-               <xf:send submission="save-and-close-submission" />
-           </xf:action>
+            </xf:action>
         </xf:model>
 };
 
@@ -290,7 +287,7 @@ declare function local:create-page-content($type-request as xs:string, $tabs as 
                         <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
                     </xf:output>
                 </xf:label>
-                <xf:dispatch ev:event="DOMActivate" name="save-and-close-action" targetid="main-content"/>
+                <xf:send submission="s-save" />
             </xf:trigger>
             <span class="related-title">
                 <xf:output value="instance('i-configuration')/related-publication-title" />
@@ -315,7 +312,7 @@ declare function local:create-page-content($type-request as xs:string, $tabs as 
                         <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
                     </xf:output>
                 </xf:label>
-                <xf:dispatch ev:event="DOMActivate" name="save-and-close-action" targetid="main-content"/>
+                <xf:send submission="s-save" />
             </xf:trigger>
         </div>              
     </div>
