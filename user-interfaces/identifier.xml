@@ -209,13 +209,7 @@
                         </xf:label>
                     </xf:input>
                 </xf:group>
-            </xf:repeat><!--identifier repeat ends-->
-            <xf:group appearance="full" ref=".[not(mods:identifier)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Identifier</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:identifier" origin="instance('new-instance')/mods:identifier" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
+            </xf:repeat>
         </fieldset>
     </xf:group>
 </div>

@@ -81,7 +81,7 @@
                                     <xf:hint ref="id('hint-code_altRepGroup', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('altRepGroup', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('altRepGroup', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -94,7 +94,7 @@
                                     <xf:hint ref="id('hint-code_typeOfResource-collection', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('yes-empty', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('yes-empty', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -107,7 +107,7 @@
                                     <xf:hint ref="id('hint-code_typeOfResource-manuscript', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('yes-empty', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('yes-empty', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -129,7 +129,7 @@
                                     <xf:hint ref="id('hint-code_usage', instance('i-hint-codes'))/*:help"/>
                                 </xf:output>
                             </xf:label>
-                            <xf:itemset nodeset="id('usage-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                            <xf:itemset nodeset="id('usage-type', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                 <xf:label ref="*:label"/>
                                 <xf:value ref="*:value"/>
                             </xf:itemset>
@@ -141,19 +141,13 @@
                                 <xf:hint ref="id('hint-code_typeOfResource', instance('i-hint-codes'))/*:help"/>
                             </xf:output>
                         </xf:label>
-                        <xf:itemset nodeset="id('type-of-resource', instance('code-tables'))/*:items/*:item" model="m-ui">
+                        <xf:itemset nodeset="id('type-of-resource', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                             <xf:label ref="*:label"/>
                             <xf:value ref="*:value"/>
                         </xf:itemset>
                     </xf:select1>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:typeOfResource)]">
-                <xf:trigger class="add-button">
-                    <xf:label class="xforms-group-label-centered">Add Missing Resource Type</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:typeOfResource" origin="instance('new-instance')/mods:typeOfResource" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>

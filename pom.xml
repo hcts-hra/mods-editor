@@ -5,7 +5,7 @@
 
 	<groupId>de.uni-hd.hra</groupId>
 	<artifactId>mods-editor</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<packaging>pom</packaging>
 
 	<url>http://exist-db.org</url>

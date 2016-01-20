@@ -150,7 +150,7 @@
                                                         <xf:hint ref="id('hint-code_part-extent-unit', instance('i-hint-codes'))/*:help"/>
                                                     </xf:output>
                                                 </xf:label>
-                                                <xf:itemset nodeset="id('part-extent-unit', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                                <xf:itemset nodeset="id('part-extent-unit', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                                     <xf:label ref="*:label"/>
                                                     <xf:value ref="*:value"/>
                                                 </xf:itemset>
@@ -187,7 +187,7 @@
                             <xf:group class="margin-plus" appearance="full">
                                 <xf:select1 ref="./@type">
                                     <xf:label>Type</xf:label>
-                                    <xf:itemset nodeset="id('identifier-type', instance('code-tables'))/*:items/*:item" model="m-ui">
+                                    <xf:itemset nodeset="id('identifier-type', instance('i-code-tables'))/*:items/*:item" model="m-ui">
                                         <xf:label ref="*:label"/>
                                         <xf:value ref="*:value"/>
                                     </xf:itemset>

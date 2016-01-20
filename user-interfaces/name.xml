@@ -1175,12 +1175,6 @@ s	                        </xf:trigger>
                     </fieldset>
                 </xf:group>
             </xf:repeat>
-            <xf:group appearance="full" ref=".[not(mods:name)]">
-                <xf:trigger>
-                    <xf:label>Add Missing Name</xf:label>
-                    <xf:insert nodeset="instance('save-data')/mods:name" origin="instance('new-instance')/mods:name" ev:event="DOMActivate"/>
-                </xf:trigger>
-            </xf:group>
         </fieldset>
     </xf:group>
 </div>
