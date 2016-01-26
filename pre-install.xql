@@ -1,6 +1,6 @@
 xquery version "3.0";
 
-import module namespace config = "http://exist-db.org/mods/config" at "xmldb:exist:///db/apps/tamboti/modules/config.xqm";
+import module namespace config = "http://exist-db.org/mods/config" at "modules/config.xqm";
 import module namespace installation = "http://hra.uni-heidelberg.de/ns/tamboti/installation/" at "xmldb:exist:///db/apps/tamboti/modules/installation/installation.xqm";
 
 (: The following external variables are set by the repo:deploy function :)

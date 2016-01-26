@@ -13,6 +13,7 @@ declare variable $config:data-path := "/db/data";
 declare variable $config:dba-credentials := ("admin", "");
 
 (:~ various permissions :)
+declare variable $config:public-collection-mode := "rwxr-xr-x";
 declare variable $config:resource-mode := "rw-------";
 
 declare function config:get-short-title($entry as element()) {

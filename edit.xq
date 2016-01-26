@@ -53,12 +53,6 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
     let $doc-name := concat($id, '.xml')
     let $stored := xmldb:store($config:data-path, $doc-name, $template)   
 
-    (:Make the record accessible to the user alone in the temp collection.:)
-    let $permissions := 
-        (
-            sm:chmod(xs:anyURI($stored), $config:temp-resource-mode)
-        )
-
     (:Get the remaining parameters that are to be stored, in addition to transliterationOfResource (which was fetched above).:)
     let $scriptOfResource := request:get-parameter("scriptOfResource", '')
     let $languageOfResource := request:get-parameter("languageOfResource", '')

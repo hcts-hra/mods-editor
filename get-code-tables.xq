@@ -1,6 +1,6 @@
 xquery version "3.0";
 
-import module namespace config = "http://exist-db.org/mods/config" at "../config.xqm";
+import module namespace config = "http://hra.uni-heidelberg.de/ns/mods-editor/config/" at "modules/config.xqm";
 
 declare namespace mods-editor = "http://hra.uni-heidelberg.de/ns/mods-editor/";
 declare option exist:serialize "method=xml media-type=text/xml indent=yes";
@@ -40,7 +40,7 @@ declare function local:get-last-modified($collection-path as xs:string, $code-ta
 let $code-table-ids := request:get-parameter('code-table-ids', '')
 let $code-table-ids := tokenize($code-table-ids, ',')
 
-let $code-table-collection := concat($config:edit-app-root, '/code-tables/')
+let $code-table-collection := concat($config:app-path, '/code-tables/')
 let $code-tables := collection($code-table-collection)/mods-editor:code-table[@xml:id = $code-table-ids]
 
 (: generate etag :)
