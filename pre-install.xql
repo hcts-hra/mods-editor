@@ -14,8 +14,8 @@ declare variable $target external;
 
 declare variable $config-collection := "/system/config";
 
-declare variable $editor-code-tables-collection := "/db/apps/tamboti/modules/edit/code-tables";
+declare variable $editor-code-tables-collection := $home || "/code-tables";
 
 installation:mkcol($config-collection, $editor-code-tables-collection, $config:public-collection-mode)
 ,
-xmldb:store-files-from-pattern(fn:concat($config-collection, $editor-code-tables-collection), $dir, "system/*.xconf")
+xmldb:store-files-from-pattern($config-collection || $editor-code-tables-collection, $dir, "system/*.xconf")
