@@ -370,10 +370,10 @@ return
             <title>
                 {$header-title}
             </title>
-            <script type="text/javascript" src="../../resources/scripts/jquery-1.11.2/jquery-1.11.2.min.js">/**/</script>
-            <script type="text/javascript" src="../../resources/scripts/jquery-ui-1.11.4/jquery-ui.min.js">/**/</script>
+            <script type="text/javascript" src="resources/scripts/jquery-1.11.2/jquery-1.11.2.min.js">/**/</script>
+            <script type="text/javascript" src="resources/scripts/jquery-ui-1.11.4/jquery-ui.min.js">/**/</script>
             <script type="text/javascript" src="editor.js">/**/</script>
-            <link rel="stylesheet" type="text/css" href="../../resources/scripts/jquery-ui-1.11.4/jquery-ui.min.css" />
+            <link rel="stylesheet" type="text/css" href="resources/scripts/jquery-ui-1.11.4/jquery-ui.min.css" />
             <link rel="stylesheet" type="text/css" href="edit.css"/>
             <link rel="stylesheet" type="text/css" href="{$tamboti-css}"/>              
             {$model}
