@@ -3,7 +3,6 @@ xquery version "3.0";
 module namespace installation = "http://hra.uni-heidelberg.de/ns/tamboti/installation/";
 
 import module namespace config = "http://exist-db.org/mods/config" at "xmldb:exist:///db/apps/tamboti/modules/config.xqm";
-import module namespace security = "http://exist-db.org/mods/security" at "xmldb:exist:///db/apps/tamboti/modules/search/security.xqm";
 
 (:~ Functions needed for pre-install.xq of tamboti and tamboti-samples apps :)
 declare function installation:mkcol-recursive($collection, $components, $permissions as xs:string) {
@@ -16,7 +15,7 @@ declare function installation:mkcol-recursive($collection, $components, $permiss
                 (
                     xmldb:create-collection($collection, $components[1])
                     ,
-                    security:set-resource-permissions(xs:anyURI($newColl), $config:biblio-admin-user, $config:biblio-users-group, $permissions)
+                    local:set-resource-permissions(xs:anyURI($newColl), $config:biblio-admin-user, $config:biblio-users-group, $permissions)
                 )
             else ()
             ,
@@ -32,12 +31,21 @@ declare function installation:mkcol($collection, $path, $permissions as xs:strin
 
 declare function installation:set-public-collection-permissions-recursively($collection-path as xs:anyURI) {
     (
-        security:set-resource-permissions($collection-path, $config:biblio-admin-user, $config:biblio-users-group, $config:public-collection-mode)
+        local:set-resource-permissions($collection-path, $config:biblio-admin-user, $config:biblio-users-group, $config:public-collection-mode)
         ,
         for $subcollection-name in xmldb:get-child-collections($collection-path)
         return installation:set-public-collection-permissions-recursively(xs:anyURI($collection-path || "/" || $subcollection-name))
         ,
         for $resource-name in xmldb:get-child-resources($collection-path)
-        return security:set-resource-permissions(xs:anyURI(concat($collection-path, '/', $resource-name)), $config:biblio-admin-user, $config:biblio-users-group, $config:public-resource-mode)
+        return local:set-resource-permissions(xs:anyURI(concat($collection-path, '/', $resource-name)), $config:biblio-admin-user, $config:biblio-users-group, $config:public-resource-mode)
     )
 };
+
+declare function local:set-resource-permissions($resource-path as xs:anyURI, $user-name as xs:string, $group-name as xs:string, $permissions as xs:string) as empty() {
+    (
+        sm:chown($resource-path, $user-name),
+        sm:chgrp($resource-path, $group-name),
+        sm:chmod($resource-path, $permissions)        
+    )
+};
+
