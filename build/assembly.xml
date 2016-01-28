@@ -8,8 +8,7 @@
 	<license>GNU-LGPL</license>
 	<copyright>true</copyright>
 	<type>application</type>
-	<target>hra-mods-editor</target>
-	<permissions user="editor" password="editor" group="biblio.users" mode="0444" />
+	<target>${project.artifactId}</target>
 	<status>stable</status>
 	<prepare>pre-install.xql</prepare>
 	<tag>hra-mods-editor</tag>

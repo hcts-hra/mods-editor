@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.uni-hd.hra</groupId>
-	<artifactId>mods-editor</artifactId>
+	<artifactId>hra-mods-editor</artifactId>
 	<version>1.1.0</version>
 	<packaging>pom</packaging>
 
@@ -18,7 +18,7 @@
 		<mavenVersion>3.1.1</mavenVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<package-name>http://hra.uni-hd.de/apps/mods-editor</package-name>
-		<package-title>MODS Editor</package-title>
+		<package-title>HRA MODS Editor</package-title>
 		<package-type>application</package-type>
 	</properties>
 
