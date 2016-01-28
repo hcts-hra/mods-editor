@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.uni-hd.hra</groupId>
-	<artifactId>mods-editor</artifactId>
-	<version>1.0.4</version>
+	<artifactId>hra-mods-editor</artifactId>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 
 	<url>http://exist-db.org</url>
@@ -18,7 +18,7 @@
 		<mavenVersion>3.1.1</mavenVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<package-name>http://hra.uni-hd.de/apps/mods-editor</package-name>
-		<package-title>MODS Editor</package-title>
+		<package-title>HRA MODS Editor</package-title>
 		<package-type>application</package-type>
 	</properties>
 
@@ -46,6 +46,11 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>replacer</artifactId>
+					<version>1.5.3</version>
+				</plugin>
+				<plugin>
 					<groupId>ro.kuberam.maven.plugins</groupId>
 					<artifactId>kuberam-expath-plugin</artifactId>
 					<version>0.4.4</version>
@@ -53,6 +58,34 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<executions>
+					<execution>
+						<id>filter-config.template.xqm</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<file>${basedir}/modules/config.template.xqm</file>
+							<outputFile>${project.build.directory}/maven-replacer-plugin/config.xqm</outputFile>
+							<replacements>
+								<replacement>
+									<token>config:dba-credentials := ("admin", "")</token>
+									<value>config:dba-credentials := ("admin","${test-tamboti.admin-password}")</value>
+								</replacement>
+								<replacement>
+									<token>config:app-version := ""</token>
+									<value>config:app-version := "${project.version}"</value>
+								</replacement>
+							</replacements>
+							<regex>false</regex>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>ro.kuberam.maven.plugins</groupId>
 				<artifactId>kuberam-expath-plugin</artifactId>

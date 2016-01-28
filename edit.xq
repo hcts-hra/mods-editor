@@ -2,7 +2,6 @@ xquery version "3.0";
 
 (:TODO: change all 'monograph' to 'book' in tabs-data.xml and compact body files:)
 (:TODO: Code related to MADS files.:)
-(:TODO move code into security module:)
 
 declare default element namespace "http://www.w3.org/1999/xhtml";
 declare namespace xf="http://www.w3.org/2002/xforms";
@@ -14,9 +13,7 @@ declare namespace mods-editor = "http://hra.uni-heidelberg.de/ns/mods-editor/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace html = "http://www.w3.org/1999/xhtml";
 
-import module namespace mods-common = "http://exist-db.org/mods/common" at "../mods-common.xql";
-import module namespace config = "http://exist-db.org/mods/config" at "../config.xqm";
-import module namespace security = "http://exist-db.org/mods/security" at "../search/security.xqm"; (:TODO move security module up one level:)
+import module namespace config = "http://hra.uni-heidelberg.de/ns/mods-editor/config/" at "modules/config.xqm";
 
 (:The following variables are used for a kind of dynamic theming.:)
 declare variable $theme := substring-before(substring-after(request:get-url(), "/apps/"), "/modules/edit/edit.xq");
@@ -50,24 +47,12 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
                 if ($transliterationOfResource) 
                 then concat($type-request, '-transliterated') 
                 else concat($type-request, '-latin') 
-    let $template := doc(concat($config:edit-app-root, '/data-templates/', $template-request, '.xml'))
+    let $template := doc(concat($config:app-path, '/data-templates/', $template-request, '.xml'))
     
     (:Then give it a name based on a uuid, store it in the temp collection and set restrictive permissions on it.:)
     let $doc-name := concat($id, '.xml')
-    let $stored := xmldb:store($config:mods-temp-collection, $doc-name, $template)   
+    let $stored := xmldb:store($config:data-path, $doc-name, $template)   
 
-    (:Make the record accessible to the user alone in the temp collection.:)
-    let $permissions := 
-        (
-            sm:chmod(xs:anyURI($stored), $config:temp-resource-mode)
-        )
-    
-    (:If the record is created in a collection inside commons, it should be visible to all.:)
-    (:let $null := 
-        if (contains($target-collection, $config:mods-commons)) 
-        then security:set-resource-permissions(xs:anyURI(concat($config:mods-temp-collection, "/", $doc-name)), $config:biblio-admin-user, $config:biblio-users-group, $config:collection-mode)
-        else ():)
-    
     (:Get the remaining parameters that are to be stored, in addition to transliterationOfResource (which was fetched above).:)
     let $scriptOfResource := request:get-parameter("scriptOfResource", '')
     let $languageOfResource := request:get-parameter("languageOfResource", '')
@@ -211,13 +196,6 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
            
            <xf:bind id="b-compact-name" ref="instance('i-variables')/compact-name-delete" relevant="count(instance('save-data')/mods:name) &gt; 1"/>
            
-           <xf:submission
-                id="save-submission" 
-                method="post"
-                ref="instance('save-data')"
-                resource="save.xq?collection={$config:mods-temp-collection}&amp;action=save" replace="none">
-           </xf:submission>
-           
            <!--Save in target collection-->
            <xf:submission 
                 id="s-save" 
@@ -294,10 +272,7 @@ declare function local:create-page-content($type-request as xs:string, $tabs as 
             </span>
         </div>            
         <div id="user-interface-container"/>
-        <div class="save-buttons-bottom">    
-            <!--<xf:submit submission="save-submission">
-                <xf:label>Save</xf:label>
-            </xf:submit>-->
+        <div class="save-buttons-bottom">
             <xf:trigger>
                 <xf:label>Cancel Editing</xf:label>
                 <xf:action ev:event="DOMActivate">
@@ -316,16 +291,6 @@ declare function local:create-page-content($type-request as xs:string, $tabs as 
             </xf:trigger>
         </div>              
     </div>
-};
-
-declare function local:get-target-collection($target-collection as xs:string) {
-    let $target-collection-display := replace(replace(xmldb:decode-uri($target-collection), '/db' || $config:users-collection || '/', ''), '/db' || $config:mods-commons || '/', '')
-    let $target-collection-display := 
-        if ($target-collection-display eq security:get-user-credential-from-session()[1])
-        then $config:data-collection-name || '/Home'
-        else $target-collection-display
-        
-    return $target-collection-display
 };
 
 declare function local:get-data-template-name($type-request as xs:string, $transliterationOfResource as xs:string) {
@@ -352,7 +317,7 @@ declare function local:get-related-publication-title($data-instance as node()) {
         else ()
     let $related-publication-title := 
         if ($related-publication-id) 
-        then mods-common:get-short-title(collection($config:mods-root)//mods:mods[@ID eq $related-publication-id][1])
+        then config:get-short-title(collection($config:data-path)//mods:mods[@ID eq $related-publication-id][1])
         else ()
     let $related-publication-title :=
         (:Check for no string contents - the count may still be 1.:)
@@ -373,8 +338,8 @@ declare function local:get-related-publication-title($data-instance as node()) {
 
 declare function local:get-data-instance($record-id as xs:string, $data-template-name as xs:string) {
     if ($record-id != '')
-    then collection($config:content-root)//mods:mods[@ID = $record-id]
-    else doc(concat($config:edit-app-root, '/data-templates/', $data-template-name, '.xml'))    
+    then collection($config:data-path)//mods:mods[@ID = $record-id]
+    else doc(concat($config:app-path, '/data-templates/', $data-template-name, '.xml'))    
 };
 
 declare function local:get-document-type($schema-location as xs:string) {
@@ -387,13 +352,13 @@ let $document-type := replace(replace(replace($document-type, '-latin', ''), '-t
 let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
 
 let $data-template-name := local:get-data-template-name($document-type, $transliterationOfResource)
-let $target-collection := local:get-target-collection(xmldb:encode-uri(request:get-parameter("collection", '')))
+let $target-collection := request:get-parameter("collection", '')
 
 let $data-instance := local:get-data-instance($record-id, $data-template-name)
 let $document-type := if ($record-id != '') then local:get-document-type($data-instance/@xsi:schemaLocation) else $document-type
 let $data-template-name := if ($record-id != '') then local:get-data-template-name($document-type, $transliterationOfResource) else $data-template-name
 
-let $tabs := doc(concat($config:edit-app-root, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
+let $tabs := doc(concat($config:app-path, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
 let $model := local:create-xf-model($data-instance, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
 let $content := local:create-page-content($data-template-name, $tabs)
 
@@ -405,10 +370,10 @@ return
             <title>
                 {$header-title}
             </title>
-            <script type="text/javascript" src="../../resources/scripts/jquery-1.11.2/jquery-1.11.2.min.js">/**/</script>
-            <script type="text/javascript" src="../../resources/scripts/jquery-ui-1.11.4/jquery-ui.min.js">/**/</script>
+            <script type="text/javascript" src="resources/scripts/jquery-1.11.2/jquery-1.11.2.min.js">/**/</script>
+            <script type="text/javascript" src="resources/scripts/jquery-ui-1.11.4/jquery-ui.min.js">/**/</script>
             <script type="text/javascript" src="editor.js">/**/</script>
-            <link rel="stylesheet" type="text/css" href="../../resources/scripts/jquery-ui-1.11.4/jquery-ui.min.css" />
+            <link rel="stylesheet" type="text/css" href="resources/scripts/jquery-ui-1.11.4/jquery-ui.min.css" />
             <link rel="stylesheet" type="text/css" href="edit.css"/>
             <link rel="stylesheet" type="text/css" href="{$tamboti-css}"/>              
             {$model}

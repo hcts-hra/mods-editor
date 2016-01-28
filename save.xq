@@ -1,8 +1,6 @@
 xquery version "3.0";
 
-(: XQuery script to save a new MODS record from an incoming HTTP POST :)
-
-import module namespace config = "http://exist-db.org/mods/config" at "../config.xqm";
+import module namespace config = "http://hra.uni-heidelberg.de/ns/mods-editor/config/" at "modules/config.xqm";
 import module namespace security = "http://exist-db.org/mods/security" at "../search/security.xqm"; (: TODO move security module up one level :)
 import module namespace tamboti-utils = "http://hra.uni-heidelberg.de/ns/tamboti/utils" at "../utils/utils.xqm";
 
@@ -288,7 +286,7 @@ declare function local:do-updates($item, $doc) {
 (: Find the collection containing the record with the uuid in question in the users collection and in the commons collection.
 This means that any record temporarily in the temp collection is not found. :)
 declare function local:find-live-collection-containing-uuid($uuid as xs:string) as xs:string? {
-    let $live-record := collection($config:users-collection, $config:mods-commons)/mods:mods[@ID = $uuid][1]
+    let $live-record := collection($config:data-path)/mods:mods[@ID = $uuid][1]
     return
         if (not(empty($live-record))) 
         then replace(document-uri(root($live-record)), "(.*)/.*", "$1")
@@ -305,14 +303,6 @@ let $action := request:get-parameter('action', 'save')
 let $incoming-id := $item/@ID/string()
 let $incoming-id := if ($incoming-id = "id") then ("uuid-" || util:uuid()) else $incoming-id
 
-let $user := session:get-attribute($security:SESSION_USER_ATTRIBUTE)
-let $last-modified := xmldb:last-modified($config:mods-temp-collection, concat($incoming-id,'.xml'))
-(:There is no way to store the user name in MODS, therefore it is stored in extension.:)
-let $last-modified-extension :=
-    <ext:modified>
-        <ext:when>{$last-modified}</ext:when>
-        <ext:who>{$user}</ext:who>
-    </ext:modified>
 (: If we do not have an ID, then throw an error. :) 
 return
     if (string-length($incoming-id) eq 0)
@@ -325,15 +315,7 @@ return
         (:Locate the document in temp and and load it in $doc.:)
         let $file-to-update := concat($incoming-id, '.xml')
         
-        (:let $temp-file-path := concat($config:mods-temp-collection, '/', $file-to-update):)
-(:        let $temp-file-path := concat($config:mods-temp-collection, '/', $file-to-update):)
-        (:This is the document in temp to be updated during saves and the document to be saved in the target collection when the user has finished editing.:)
-(:        let $doc := doc($temp-file-path)/mods:mods:)
         let $updates := 
-(:            if ($action eq 'cancel'):)
-(:            (: Remove the document from temp. :):)
-(:            then xmldb:remove($config:mods-temp-collection, $file-to-update):)
-(:            else:)
                 if ($action eq 'close')
                 (: If the user has finished editing. :)
                 then
@@ -359,15 +341,9 @@ return
                         (:Update $doc (the document in temp) with $item (the new edits).:)
 (:                        local:do-updates($item, $doc):)
 (:                        ,:)
-                        (:Insert modification date-time and user name.:)
-(:                        update insert $last-modified-extension into $doc/mods:extension:)
-(:                        ,:)
                         (:Move $doc from temp to target collection.:)
                         (:NB: To avoid potential problems with xmldb:move(), xmldb:store() and xmldb:remove() are used.
                         xmldb:move() is suspected to create zero byte "ghost" files in backups in __lost_and_found__.:)
-                        
-                        (:NB: The code used formerly, covering next three steps: 
-                        xmldb:move($config:mods-temp-collection, $target-collection, $file-to-update),:)
 
                         (:Only attempt to delete the original record if it exists; 
                         if an attempt is made to delete a file which does not exist, the script will terminate. 
@@ -380,11 +356,6 @@ return
                         the collection chosen to store a new record.:)
 (:                        xmldb:store($target-collection, $file-to-update, $doc):)
 
-                        (:Remove the $doc record from temp if store in target was successful.:)
-(:                        if (doc($record-path)) then xmldb:remove($config:mods-temp-collection, $file-to-update) :)
-(:                        else ():)
-                        (:Set the same permissions on the moved file that the parent collection has.:)
-(:                        ,:)
                         system:as-user($config:dba-credentials[1], $config:dba-credentials[2], 
                             (
                                 xmldb:store($target-collection, $file-to-update, $item)
@@ -402,9 +373,6 @@ return
                                 sm:chmod($record-path, $config:resource-mode)
                                 ,
                                 util:log("DEBUG", sm:get-permissions($record-path))
-                                ,
-                                update insert $last-modified-extension into doc($record-path)/ext:extension
-                                
                             )
                         )
                     )

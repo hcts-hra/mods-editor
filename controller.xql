@@ -1,19 +1,21 @@
 xquery version "3.0";
 
-import module namespace theme="http://exist-db.org/xquery/biblio/theme" at "../theme.xqm";
-import module namespace config="http://exist-db.org/mods/config" at "../config.xqm";
+declare variable $exist:controller external;
+declare variable $exist:root external;
+declare variable $exist:prefix external;
+declare variable $exist:path external;
+declare variable $exist:resource external;
 
-if (starts-with($exist:path, "/theme")) then
-    let $path := theme:resolve($exist:prefix || "/" || $config:app-id, $exist:root, substring-after($exist:path, "/theme"))
-    let $themePath := replace($path, "^(.*)/[^/]+$", "$1")
-    return
+(: if we have a slash or a null then redirect to the index page. :)
+if ($exist:path eq '/')
+    then
+        (: forward root path to index.xq :)
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <forward url="{$path}">
-                <set-attribute name="theme-collection" value="{$themePath}"/>
-            </forward>
+            <redirect url="edit.xq"/>
         </dispatch>
-else
-    (: everything else is passed through :)
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-        <cache-control cache="yes"/>
-    </dispatch>
+    else
+        (: everything else is passed through :)
+        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+            <cache-control cache="yes"/>
+        </dispatch>
+        

@@ -8,11 +8,10 @@
 	<license>GNU-LGPL</license>
 	<copyright>true</copyright>
 	<type>application</type>
-	<target>tamboti/modules/edit</target>
-	<permissions user="editor" password="editor" group="biblio.users" mode="0444" />
+	<target>${project.artifactId}</target>
 	<status>stable</status>
 	<prepare>pre-install.xql</prepare>
-	<tag>mods-editor</tag>
+	<tag>hra-mods-editor</tag>
 	<tag>${package-type}</tag>
 	<tag>exist</tag>
 	<category id="libs">Libraries</category>
@@ -26,6 +25,13 @@
 				<exclude>target/</exclude>
 				<exclude>pom.xml</exclude>
 			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}/maven-replacer-plugin</directory>
+			<outputDirectory>/modules</outputDirectory>
+			<includes>
+				<include>config.xqm</include>
+			</includes>
 		</fileSet>
 	</fileSets>
 </package>
