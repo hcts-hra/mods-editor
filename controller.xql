@@ -11,7 +11,7 @@ if ($exist:path eq '/')
     then
         (: forward root path to index.xq :)
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-            <redirect url="edit.xq"/>
+            <redirect url="index.xq"/>
         </dispatch>
     else
         (: everything else is passed through :)
