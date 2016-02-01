@@ -16,7 +16,8 @@ declare namespace html = "http://www.w3.org/1999/xhtml";
 import module namespace config = "http://hra.uni-heidelberg.de/ns/mods-editor/config/" at "modules/config.xqm";
 
 (:The following variables are used for a kind of dynamic theming.:)
-declare variable $theme := substring-before(substring-after(request:get-url(), "/apps/"), "/modules/edit/edit.xq");
+(:declare variable $theme := substring-before(substring-after(request:get-url(), "/apps/"), "/hra-mods-editor/index.xq");:)
+declare variable $theme := substring-before(substring-after(request:get-url(), "/apps/"), "/hra-mods-editor/index.xq");
 declare variable $header-title := if ($theme eq "tamboti") then "Tamboti Metadata Framework - MODS Editor" else "eXist Bibliographical Demo - MODS Editor";
 declare variable $tamboti-css := if ($theme eq "tamboti") then "tamboti.css" else ();
 declare variable $img-left-src := if ($theme eq "tamboti") then "../../themes/tamboti/images/tamboti.png" else "../../themes/default/images/logo.jpg";
