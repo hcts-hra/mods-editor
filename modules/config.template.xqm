@@ -12,9 +12,12 @@ declare variable $config:data-path := "/db/data";
 
 (:~ credentials for the dba admin user :)
 declare variable $config:dba-credentials := ("admin", "");
+declare variable $config:biblio-admin-user := "editor";
+declare variable $config:biblio-users-group := "biblio.users";
 
 (:~ various permissions :)
 declare variable $config:public-collection-mode := "rwxr-xr-x";
+declare variable $config:public-resource-mode := "rw-r--r--";
 declare variable $config:resource-mode := "rw-------";
 
 declare function config:get-short-title($entry as element()) {
