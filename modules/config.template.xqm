@@ -7,8 +7,7 @@ declare namespace mods = "http://www.loc.gov/mods/v3";
 declare variable $config:app-version := "";
 
 (:~ various paths :)
-(:declare variable $config:app-root := "/db/apps/hra-mods-editor";:)
-declare variable $config:app-path := "/db/apps/tamboti/modules/edit";
+declare variable $config:app-path := "/db/apps/hra-mods-editor";
 declare variable $config:data-path := "/db/data";
 
 (:~ credentials for the dba admin user :)
