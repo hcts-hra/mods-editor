@@ -1,8 +1,8 @@
 xquery version "3.0";
 
 import module namespace config = "http://hra.uni-heidelberg.de/ns/mods-editor/config/" at "modules/config.xqm";
-import module namespace security = "http://exist-db.org/mods/security" at "../search/security.xqm"; (: TODO move security module up one level :)
-import module namespace tamboti-utils = "http://hra.uni-heidelberg.de/ns/tamboti/utils" at "../utils/utils.xqm";
+import module namespace security = "http://exist-db.org/mods/security" at "xmldb:exist:///db/apps/tamboti/modules/search/security.xqm";
+import module namespace tamboti-utils = "http://hra.uni-heidelberg.de/ns/tamboti/utils" at "xmldb:exist:///db/apps/tamboti/modules/utils/utils.xqm";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace ext="http://exist-db.org/mods/extension";
