@@ -234,80 +234,20 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
         </xf:model>
 };
 
-declare function local:create-page-content($type-request as xs:string, $tabs as item()+) as element(div) {
-    let $type-request := replace(replace($type-request, '-latin', ''), '-transliterated', '')
-
-    (:If the record is hosted by a record linked to through an xlink:href, 
-    display the title of this record. 
-    Only the xlink on the first relatedItem with type host is processed.:)
-    let $host := request:get-parameter('host', '')
-    
-    return
-    <div id="main-content" xmlns="http://www.w3.org/1999/xhtml" class="content">
-        <span class="info-line">
-            <xf:output value="'Editing record of type '" />
-            <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
-                <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
-            </xf:output>
-            <xf:output value="', with the title '" />
-            <strong>
-                <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
-            </strong>
-            <xf:output value="', to be saved in '" />
-            <strong>
-                <xf:output value="concat(instance('i-configuration')/target-collection, '.')" />
-            </strong>              
-        </span>
-        {$tabs}
-        <div class="save-buttons-top">    
-             <xf:trigger>
-                <xf:label>
-                    <xf:output value="'Finish Editing'" class="hint-icon">
-                        <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
-                    </xf:output>
-                </xf:label>
-                <xf:send submission="s-save" />
-            </xf:trigger>
-            <span class="related-title">
-                <xf:output value="instance('i-configuration')/related-publication-title" />
-            </span>
-        </div>            
-        <div id="user-interface-container"/>
-        <div class="save-buttons-bottom">
-            <xf:trigger>
-                <xf:label>Cancel Editing</xf:label>
-                <xf:action ev:event="DOMActivate">
-                    <script type="text/javascript">
-                        window.close();
-                    </script>
-                </xf:action>
-             </xf:trigger>
-             <xf:trigger>
-                <xf:label>
-                    <xf:output value="'Finish Editing'" class="hint-icon">
-                        <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
-                    </xf:output>
-                </xf:label>
-                <xf:send submission="s-save" />
-            </xf:trigger>
-        </div>              
-    </div>
-};
-
-declare function local:get-data-template-name($type-request as xs:string, $transliterationOfResource as xs:string) {
-    if ($type-request = (
+declare function local:get-data-template-name($document-type as xs:string, $transliterationOfResource as xs:string) {
+    if ($document-type = (
                 'suebs-tibetan', 
                 'suebs-chinese', 
                 'insert-templates', 
                 'new-instance', 
                 'mads'))
     (:These document types do not divide into latin and transliterated.:)
-    then $type-request
+    then $document-type
     else
         (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
         if ($transliterationOfResource) 
-        then concat($type-request, '-transliterated') 
-        else concat($type-request, '-latin') 
+        then concat($document-type, '-transliterated') 
+        else concat($document-type, '-latin') 
 };
 
 declare function local:get-related-publication-title($data-instance as node()) {
@@ -343,27 +283,40 @@ declare function local:get-data-instance($record-id as xs:string, $data-template
     else doc(concat($config:app-path, '/data-templates/', $data-template-name, '.xml'))    
 };
 
-declare function local:get-document-type($schema-location as xs:string) {
-    replace(replace(replace(substring-after($schema-location, "http://cluster-schemas.uni-hd.de/mods-"), '.xsd', ''), '-latin', ''), '-transliterated', '')
+declare function local:get-document-type($schema-location as xs:string?) {
+    let $document-type := replace(replace(replace(substring-after($schema-location, "http://cluster-schemas.uni-hd.de/mods-"), '.xsd', ''), '-latin', ''), '-transliterated', '')
+    let $document-type := if ($document-type = '') then request:get-parameter('type', 'insert-templates') else $document-type
+    
+    return $document-type
+};
+
+declare function local:get-tabs($document-type as xs:string) {
+    doc(concat($config:app-path, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
+};
+
+declare function local:get-content-blocks-for-existing-record($record-id as xs:string) {
+    let $record := collection($config:data-path)//mods:mods[@ID = $record-id]
+    let $document-type := local:get-document-type($record/@xsi:schemaLocation)
+    
+    return
+        map {
+            "data-instance": $record,
+            "tabs": local:get-tabs($document-type),
+            "document-type": $document-type
+        }
 };
 
 let $record-id := request:get-parameter('id', '')
-let $document-type := request:get-parameter('type', 'insert-templates')
-let $document-type := replace(replace(replace($document-type, '-latin', ''), '-transliterated', ''), '-compact', '')
+let $content-parts := if ($record-id != '') then local:get-content-blocks-for-existing-record($record-id) else ()
+
 let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
+let $data-template-name := local:get-data-template-name($content-parts('document-type'), $transliterationOfResource)
+let $target-collection := request:get-parameter("collection", util:collection-name($content-parts('data-instance')))
 
-let $data-template-name := local:get-data-template-name($document-type, $transliterationOfResource)
-let $target-collection := request:get-parameter("collection", '')
+let $model := local:create-xf-model($content-parts('data-instance'), $target-collection, request:get-parameter('host', ''), $data-template-name, $content-parts('tabs'))
 
-let $data-instance := local:get-data-instance($record-id, $data-template-name)
-let $document-type := if ($record-id != '') then local:get-document-type($data-instance/@xsi:schemaLocation) else $document-type
-let $data-template-name := if ($record-id != '') then local:get-data-template-name($document-type, $transliterationOfResource) else $data-template-name
-
-let $tabs := doc(concat($config:app-path, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
-let $model := local:create-xf-model($data-instance, $target-collection, request:get-parameter('host', ''), $data-template-name, $tabs)
-let $content := local:create-page-content($data-template-name, $tabs)
-
-return 
+return
+    
     (util:declare-option("exist:serialize", "method=xhtml5 media-type=text/html output-doctype=yes indent=yes encoding=utf-8")
     ,
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:ext="http://exist-db.org/mods/extension" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods-editor="http://hra.uni-heidelberg.de/ns/mods-editor/">
@@ -395,9 +348,55 @@ return
             </div>
             <div>
             <div class="container">
-                <div>
-                    {$content}
-                </div>
+    <div id="main-content" class="content">
+        <span class="info-line">
+            <xf:output value="'Editing record of type '" />
+            <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
+                <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
+            </xf:output>
+            <xf:output value="', with the title '" />
+            <strong>
+                <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
+            </strong>
+            <xf:output value="', to be saved in '" />
+            <strong>
+                <xf:output value="concat(instance('i-configuration')/target-collection, '.')" />
+            </strong>              
+        </span>
+        {$content-parts('tabs')}
+        <div class="save-buttons-top">    
+             <xf:trigger>
+                <xf:label>
+                    <xf:output value="'Finish Editing'" class="hint-icon">
+                        <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
+                    </xf:output>
+                </xf:label>
+                <xf:send submission="s-save" />
+            </xf:trigger>
+            <span class="related-title">
+                <xf:output value="instance('i-configuration')/related-publication-title" />
+            </span>
+        </div>            
+        <div id="user-interface-container"/>
+        <div class="save-buttons-bottom">
+            <xf:trigger>
+                <xf:label>Cancel Editing</xf:label>
+                <xf:action ev:event="DOMActivate">
+                    <script type="text/javascript">
+                        window.close();
+                    </script>
+                </xf:action>
+             </xf:trigger>
+             <xf:trigger>
+                <xf:label>
+                    <xf:output value="'Finish Editing'" class="hint-icon">
+                        <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
+                    </xf:output>
+                </xf:label>
+                <xf:send submission="s-save" />
+            </xf:trigger>
+        </div>              
+    </div>
             </div>
             </div>
         </body>
