@@ -277,15 +277,23 @@ declare function local:get-data-template-name($document-type as xs:string, $tran
         else concat($document-type, '-latin') 
 };
 
-declare function local:get-data-instance($record-id as xs:string, $data-template-name as xs:string) {
-    if ($record-id != '')
-    then collection($config:data-path)//mods:mods[@ID = $record-id]
-    else doc(concat($config:app-path, '/data-templates/', $data-template-name, '.xml'))    
+declare function local:get-data-instance($record-id as xs:string, $document-type as xs:string) {
+    let $record := collection($config:data-path)//mods:mods[@ID = $record-id]
+
+    return
+        if (exists($record))
+        then $record
+        else
+            let $data-template-name := local:get-data-template-name($document-type, request:get-parameter("transliterationOfResource", ''))
+            
+            return doc(concat($config:app-path, '/data-templates/', $data-template-name, '.xml'))    
 };
 
 declare function local:get-document-type($schema-location as xs:string?) {
     let $document-type := replace(replace(replace(substring-after($schema-location, "http://cluster-schemas.uni-hd.de/mods-"), '.xsd', ''), '-latin', ''), '-transliterated', '')
-    let $document-type := if ($document-type = '') then request:get-parameter('type', 'insert-templates') else $document-type
+    let $document-type := if ($document-type = '') then 'insert-templates' else $document-type
+    let $type-parameter := request:get-parameter('type', '')
+    let $document-type := if ($type-parameter = '') then 'insert-templates' else $type-parameter
     
     return $document-type
 };
@@ -294,38 +302,32 @@ declare function local:get-tabs($document-type as xs:string) {
     doc(concat($config:app-path, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
 };
 
-declare function local:get-content-blocks-for-existing-record($record-id as xs:string) {
-    let $record := collection($config:data-path)//mods:mods[@ID = $record-id]
-    let $document-type := local:get-document-type($record/@xsi:schemaLocation)
+declare function local:get-content-blocks($record-id as xs:string, $document-type as xs:string) {
+    let $data-instance := local:get-data-instance($record-id, $document-type)
+    let $document-type := local:get-document-type($data-instance/@xsi:schemaLocation)
     
     return
         map {
-            "data-instance": $record,
+            "data-instance": $data-instance,
             "tabs": local:get-tabs($document-type),
             "document-type": $document-type
         }
 };
+declare function local:get-target-collection($record-collection-path as xs:string) {
+    let $target-collection := request:get-parameter("collection", "")
 
-declare function local:get-content-blocks-for-new-record($record-id as xs:string) {
-    let $record := collection($config:data-path)//mods:mods[@ID = $record-id]
-    let $document-type := local:get-document-type($record/@xsi:schemaLocation)
-    
     return
-        map {
-            "data-instance": $record,
-            "tabs": local:get-tabs($document-type),
-            "document-type": $document-type
-        }
+        if ($target-collection != '')
+        then $target-collection
+        else $record-collection-path    
 };
 
 let $record-id := request:get-parameter('id', '')
-let $content-parts := if ($record-id != '') then local:get-content-blocks-for-existing-record($record-id) else ()
+let $document-type := request:get-parameter('type', 'insert-templates')
 
-let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-let $data-template-name := local:get-data-template-name($content-parts('document-type'), $transliterationOfResource)
-let $target-collection := request:get-parameter("collection", util:collection-name($content-parts('data-instance')))
-let $log := util:log("INFO", "$target-collection = " || $record-id)
+let $content-parts := local:get-content-blocks($record-id, $document-type)
 
+let $target-collection := local:get-target-collection(util:collection-name($content-parts('data-instance')))
 let $model := local:create-xf-model($content-parts('data-instance'), $target-collection, request:get-parameter('host', ''), $content-parts('document-type'), $content-parts('tabs'))
 
 return
