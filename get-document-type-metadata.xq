@@ -4,7 +4,7 @@ import module namespace config = "http://hra.uni-heidelberg.de/ns/mods-editor/co
 
 declare namespace mods-editor = "http://hra.uni-heidelberg.de/ns/mods-editor/";
 
-let $data-template-name := request:get-parameter('data-template-name', '')
+let $document-type := request:get-parameter('document-type', '')
 
 
-return doc(concat($config:app-path, '/code-tables/document-type.xml'))//mods-editor:item[mods-editor:value eq $data-template-name]
+return doc(concat($config:app-path, '/code-tables/document-type.xml'))//mods-editor:item[mods-editor:value eq $document-type]

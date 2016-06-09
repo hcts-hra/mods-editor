@@ -130,7 +130,7 @@ declare function local:create-new-record($id as xs:string, $type-request as xs:s
     )
 };
 
-declare function local:create-xf-model($data-instance as node(), $target-collection as xs:string, $host as xs:string, $data-template-name as xs:string, $tabs as item()+) as element(xf:model) {
+declare function local:create-xf-model($data-instance as node(), $target-collection as xs:string, $host as xs:string, $document-type as xs:string, $tabs as item()+) as element(xf:model) {
     let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
     
     return
@@ -140,7 +140,7 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
                     <current-username>{xmldb:get-current-user()}</current-username>
                     <languageOfResource>{request:get-parameter("languageOfResource", '')}</languageOfResource>
                     <scriptOfResource>{request:get-parameter("scriptOfResource", '')}</scriptOfResource>
-                    <data-template-name>{$data-template-name}</data-template-name>
+                    <document-type>{$document-type}</document-type>
                     <host>{request:get-parameter('host', '')}</host>
                     <initial-ui-id>{substring($tabs//html:div[@id = 'tab-1']//html:li[1]/html:a/@href, 2)}</initial-ui-id>
                     <target-collection>{$target-collection}</target-collection>
@@ -185,7 +185,7 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
                 <code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" />
             </xf:instance>
             
-           <xf:instance src="{concat('get-document-type-metadata.xq?data-template-name=', replace(replace($data-template-name, '-latin', ''), '-transliteration', ''))}" id="i-document-type-metadata">
+           <xf:instance src="{concat('get-document-type-metadata.xq?document-type=', $document-type)}" id="i-document-type-metadata">
                 <code-table xmlns="http://hra.uni-heidelberg.de/ns/mods-editor/" />
            </xf:instance>   
 
@@ -223,7 +223,7 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
                 <xf:action if="string-length(instance('i-configuration')/host) > 0">
                     <xf:setvalue ref="instance('save-data')/mods:relatedItem[@type eq 'host'][1]/@xlink:href" value="concat('#', instance('i-configuration')/host)" />                
                 </xf:action>
-                <xf:setvalue if="instance('i-configuration')/data-template-name != 'insert-templates'" ref="instance('i-configuration')/data-template-name" value="replace(replace(instance('save-data')/@xsi:schemaLocation, 'http://www.loc.gov/mods/v3 http://cluster-schemas.uni-hd.de/mods-', ''), '.xsd', '')" />
+                <xf:setvalue if="instance('i-configuration')/document-type != 'insert-templates'" ref="instance('i-configuration')/document-type" value="replace(replace(instance('save-data')/@xsi:schemaLocation, 'http://www.loc.gov/mods/v3 http://cluster-schemas.uni-hd.de/mods-', ''), '.xsd', '')" />
             </xf:action>
             <xf:action ev:event="loadSubform" ev:observer="main-content">
                 <xf:setvalue ref="instance('i-variables')/subform-relative-path" value="concat('user-interfaces/', event('subformId'), '.xml#user-interface-container')" />
@@ -232,22 +232,6 @@ declare function local:create-xf-model($data-instance as node(), $target-collect
                 </xf:load>
             </xf:action>
         </xf:model>
-};
-
-declare function local:get-data-template-name($document-type as xs:string, $transliterationOfResource as xs:string) {
-    if ($document-type = (
-                'suebs-tibetan', 
-                'suebs-chinese', 
-                'insert-templates', 
-                'new-instance', 
-                'mads'))
-    (:These document types do not divide into latin and transliterated.:)
-    then $document-type
-    else
-        (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
-        if ($transliterationOfResource) 
-        then concat($document-type, '-transliterated') 
-        else concat($document-type, '-latin') 
 };
 
 declare function local:get-related-publication-title($data-instance as node()) {
@@ -277,15 +261,40 @@ declare function local:get-related-publication-title($data-instance as node()) {
     return $related-publication-title
 };
 
-declare function local:get-data-instance($record-id as xs:string, $data-template-name as xs:string) {
-    if ($record-id != '')
-    then collection($config:data-path)//mods:mods[@ID = $record-id]
-    else doc(concat($config:app-path, '/data-templates/', $data-template-name, '.xml'))    
+declare function local:get-data-template-name($document-type as xs:string, $transliterationOfResource as xs:string) {
+    if ($document-type = (
+                'suebs-tibetan', 
+                'suebs-chinese', 
+                'insert-templates', 
+                'new-instance', 
+                'mads'))
+    (:These document types do not divide into latin and transliterated.:)
+    then $document-type
+    else
+        (:Append '-transliterated' if there is transliteration, otherwise append '-latin'.:)
+        if ($transliterationOfResource) 
+        then concat($document-type, '-transliterated') 
+        else concat($document-type, '-latin') 
+};
+
+declare function local:get-data-instance($record-id as xs:string, $document-type as xs:string) {
+    let $record := collection($config:data-path)//mods:mods[@ID = $record-id]
+
+    return
+        if (exists($record))
+        then $record
+        else
+            let $data-template-name := local:get-data-template-name($document-type, request:get-parameter("transliterationOfResource", ''))
+            
+            return doc(concat($config:app-path, '/data-templates/', $data-template-name, '.xml'))    
 };
 
 declare function local:get-document-type($schema-location as xs:string?) {
     let $document-type := replace(replace(replace(substring-after($schema-location, "http://cluster-schemas.uni-hd.de/mods-"), '.xsd', ''), '-latin', ''), '-transliterated', '')
-    let $document-type := if ($document-type = '') then request:get-parameter('type', 'insert-templates') else $document-type
+    let $document-type := if ($document-type = '') then 'insert-templates' else $document-type
+    
+    let $type-parameter := request:get-parameter('type', '')
+    let $document-type := if ($type-parameter = '') then $document-type else $type-parameter
     
     return $document-type
 };
@@ -294,26 +303,33 @@ declare function local:get-tabs($document-type as xs:string) {
     doc(concat($config:app-path, '/user-interfaces/tabs/', $document-type, '-stand-alone.xml'))/html:div
 };
 
-declare function local:get-content-blocks-for-existing-record($record-id as xs:string) {
-    let $record := collection($config:data-path)//mods:mods[@ID = $record-id]
-    let $document-type := local:get-document-type($record/@xsi:schemaLocation)
+declare function local:get-content-blocks($record-id as xs:string, $document-type as xs:string) {
+    let $data-instance := local:get-data-instance($record-id, $document-type)
+    let $document-type := local:get-document-type($data-instance/@xsi:schemaLocation)
     
     return
         map {
-            "data-instance": $record,
+            "data-instance": $data-instance,
             "tabs": local:get-tabs($document-type),
             "document-type": $document-type
         }
 };
+declare function local:get-target-collection($record-collection-path as xs:string) {
+    let $target-collection := request:get-parameter("collection", "")
+
+    return
+        if ($target-collection != '')
+        then $target-collection
+        else $record-collection-path    
+};
 
 let $record-id := request:get-parameter('id', '')
-let $content-parts := if ($record-id != '') then local:get-content-blocks-for-existing-record($record-id) else ()
+let $document-type := request:get-parameter('type', 'insert-templates')
 
-let $transliterationOfResource := request:get-parameter("transliterationOfResource", '')
-let $data-template-name := local:get-data-template-name($content-parts('document-type'), $transliterationOfResource)
-let $target-collection := request:get-parameter("collection", util:collection-name($content-parts('data-instance')))
+let $content-parts := local:get-content-blocks($record-id, $document-type)
 
-let $model := local:create-xf-model($content-parts('data-instance'), $target-collection, request:get-parameter('host', ''), $data-template-name, $content-parts('tabs'))
+let $target-collection := local:get-target-collection(util:collection-name($content-parts('data-instance')))
+let $model := local:create-xf-model($content-parts('data-instance'), $target-collection, request:get-parameter('host', ''), $content-parts('document-type'), $content-parts('tabs'))
 
 return
     
@@ -348,55 +364,55 @@ return
             </div>
             <div>
             <div class="container">
-    <div id="main-content" class="content">
-        <span class="info-line">
-            <xf:output value="'Editing record of type '" />
-            <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
-                <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
-            </xf:output>
-            <xf:output value="', with the title '" />
-            <strong>
-                <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
-            </strong>
-            <xf:output value="', to be saved in '" />
-            <strong>
-                <xf:output value="concat(instance('i-configuration')/target-collection, '.')" />
-            </strong>              
-        </span>
-        {$content-parts('tabs')}
-        <div class="save-buttons-top">    
-             <xf:trigger>
-                <xf:label>
-                    <xf:output value="'Finish Editing'" class="hint-icon">
-                        <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
-                    </xf:output>
-                </xf:label>
-                <xf:send submission="s-save" />
-            </xf:trigger>
-            <span class="related-title">
-                <xf:output value="instance('i-configuration')/related-publication-title" />
-            </span>
-        </div>            
-        <div id="user-interface-container"/>
-        <div class="save-buttons-bottom">
-            <xf:trigger>
-                <xf:label>Cancel Editing</xf:label>
-                <xf:action ev:event="DOMActivate">
-                    <script type="text/javascript">
-                        window.close();
-                    </script>
-                </xf:action>
-             </xf:trigger>
-             <xf:trigger>
-                <xf:label>
-                    <xf:output value="'Finish Editing'" class="hint-icon">
-                        <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
-                    </xf:output>
-                </xf:label>
-                <xf:send submission="s-save" />
-            </xf:trigger>
-        </div>              
-    </div>
+                <div id="main-content" class="content">
+                    <span class="info-line">
+                        <xf:output value="'Editing record of type '" />
+                        <xf:output value="instance('i-document-type-metadata')/mods-editor:label" class="hint-icon">
+                            <xf:hint ref="instance('i-document-type-metadata')/mods-editor:hint" />
+                        </xf:output>
+                        <xf:output value="', with the title '" />
+                        <strong>
+                            <xf:output value="concat(instance('save-data')/mods:titleInfo[1]/mods:nonSort, ' ', instance('save-data')/mods:titleInfo[1]/mods:title)" />
+                        </strong>
+                        <xf:output value="', to be saved in '" />
+                        <strong>
+                            <xf:output value="concat(instance('i-configuration')/target-collection, '.')" />
+                        </strong>              
+                    </span>
+                    {$content-parts('tabs')}
+                    <div class="save-buttons-top">    
+                         <xf:trigger>
+                            <xf:label>
+                                <xf:output value="'Finish Editing'" class="hint-icon">
+                                    <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
+                                </xf:output>
+                            </xf:label>
+                            <xf:send submission="s-save" />
+                        </xf:trigger>
+                        <span class="related-title">
+                            <xf:output value="instance('i-configuration')/related-publication-title" />
+                        </span>
+                    </div>            
+                    <div id="user-interface-container"/>
+                    <div class="save-buttons-bottom">
+                        <xf:trigger>
+                            <xf:label>Cancel Editing</xf:label>
+                            <xf:action ev:event="DOMActivate">
+                                <script type="text/javascript">
+                                    window.close();
+                                </script>
+                            </xf:action>
+                         </xf:trigger>
+                         <xf:trigger>
+                            <xf:label>
+                                <xf:output value="'Finish Editing'" class="hint-icon">
+                                    <xf:hint ref="id('hint-code_save',instance('i-hint-codes'))/*:help" />
+                                </xf:output>
+                            </xf:label>
+                            <xf:send submission="s-save" />
+                        </xf:trigger>
+                    </div>              
+                </div>
             </div>
             </div>
         </body>
