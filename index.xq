@@ -292,8 +292,9 @@ declare function local:get-data-instance($record-id as xs:string, $document-type
 declare function local:get-document-type($schema-location as xs:string?) {
     let $document-type := replace(replace(replace(substring-after($schema-location, "http://cluster-schemas.uni-hd.de/mods-"), '.xsd', ''), '-latin', ''), '-transliterated', '')
     let $document-type := if ($document-type = '') then 'insert-templates' else $document-type
+    
     let $type-parameter := request:get-parameter('type', '')
-    let $document-type := if ($type-parameter = '') then 'insert-templates' else $type-parameter
+    let $document-type := if ($type-parameter = '') then $document-type else $type-parameter
     
     return $document-type
 };
